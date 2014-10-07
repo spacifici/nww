@@ -1,19 +1,19 @@
 nww - news world wide
 
-# Item types
+# Entity types
 
-- [Timeline](#Timeline)
-- [Article](#Article)
-- [Topic](#Topic)
-- [Person](#Person)
-- [Summary](#Summary)
-- [Picture Gallery](#Picture-Gallery)
+- [Timeline](#timeline)
+- [Article](#article)
+- [Topic](#topic)
+- [Person](#person)
+- [Summary](#summary)
+- [Picture Gallery](#picture-gallery)
 
-## <a id="Timeline"></a>Timeline
+## <a id="timeline"></a>Timeline
 
 Timeline is a context, that groups and ranks items together.
 
-## <a id="Article"></a>Article
+## <a id="article"></a>Article
 
 Represents an external web page (news, blog, etc).
 
@@ -47,7 +47,7 @@ Represents an external web page (news, blog, etc).
 }
 ```
 
-## <a id="Topic"></a>Topic 
+## <a id="topic"></a>Topic 
 
 Strong groups for item. Has particular beginning. Might have short pre-history
 
@@ -75,7 +75,7 @@ Example: Flight MH17 Crash
 }
 ```
 
-## <a id="Person"></a>Person
+## <a id="person"></a>Person
 
 Person's timeline
 
@@ -85,7 +85,7 @@ Person's timeline
 }
 ```
 
-## <a id="Summary"></a>Summary
+## <a id="summary"></a>Summary
 
 Summary represents a manualy managed item.
 
@@ -95,7 +95,7 @@ Summary represents a manualy managed item.
 }
 ```
 
-## <a id="Picture-Gallery"></a>Picture Gallery
+## <a id="picture-gallery"></a>Picture Gallery
 
 Picture Gallery
 
