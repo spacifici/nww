@@ -1,6 +1,6 @@
 ``json
 {
-    "item_type": "topic",
+    "entity_type": "topic",
     
     "translations": {
         "de": "MH17-Crash",
@@ -15,6 +15,7 @@
         "handle": "MH17-Crash",
 
         "initiation_date": "17 July 2014",
+
         "title": "Malaysia Airlines Flight 17",
         "description": "Malaysia Airlines Flight 17 was a scheduled international passenger flight from Amsterdam to Kuala Lumpur that crashed on 17 July 2014, presumed to have been shot down, killing all 283 passengers and 15 crew on board. The Boeing 777-200ER airliner lost contact about 50 km (31 mi) from the Ukraine–Russia border and crashed near Torez in Donetsk Oblast, Ukraine, 40 km (25 mi) from the border, over territory controlled by pro-Russian separatists."
     }

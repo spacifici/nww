@@ -1,0 +1,12 @@
+{
+    "entity_type": "person",
+    "name": "Vladimir Putin",
+    "language": "en",
+
+    "approved": {
+        "position": "President of Russian Federation",
+        "birth_year": 1954,
+        "teaser_image_url": "",
+        "userpic_url": ""
+    }
+}

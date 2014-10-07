@@ -1,5 +1,5 @@
 {
-    "item_type": "article",
+    "entity_type": "article",
     "url": "http://www.pravda.com.ua/news/2000/07/17/7032194/",
     
     "extracted": {
@@ -26,18 +26,30 @@
 
     "editors": {
         "@philippe": {
-            "tags": [""],
-            "topics": ["MH17", "Ukraine", "DNR", "Russia"]
+            "edit_date": "7-10-2014",
+            "tags": ["MH17-Crash", "Ukraine", "DNR", "Russia"],
+            "topics": ["MH17-Crash"]
         },
         "@bogdan": {
-            "tags": ["MH17", "Russia", "Terror"],
+            "edit_date": "6-10-2014",
+            "initial_submitter": true,
+            "tags": ["MH17-Crash", "Russia", "Terror"],
         }
     },
 
-    "approval": [
-        {
-            "topic": null
-        }
-    ]
+    "approved": {
+        "weight": "month",
+        "title": "",
+        "description": "",
+        "domain_name": "pravda.com.ua",
+        "publish_date": "5-10-2014",
+        "teaser_image_url": "http://www.globalresearch.ca/wp-content/uploads/2014/07/mh17-gros-plan.jpg",
+        "tags": ["MH17-Crash", "Ukraine", "DNR", "Russia"],
+        "topics": ["MH17-Crash"],
+        "people": ["Vladimir Putin"],
+        "location": {
 
+        }
+    }
+    
 }

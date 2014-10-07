@@ -19,7 +19,7 @@ Represents an external web page (news, blog, etc).
 
 ```json
 {
-    "item_type": "article",
+    "entity_type": "article",
     "url": "", // Resource URL
     "discovery_date": "",
 
@@ -49,13 +49,15 @@ Represents an external web page (news, blog, etc).
 
 ## <a id="topic"></a>Topic 
 
-Strong groups for item. Has particular beginning. Might have short pre-history
+Strong group of items. 
+Has particular start date. 
+Might have short pre-history.
 
 Example: Flight MH17 Crash
 
 ```json
 {
-    "item_type": "topic",
+    "entity_type": "topic",
     
     "translations": {
         "de": "MH17-Crash",
@@ -81,7 +83,7 @@ Person's timeline
 
 ```json
 {
-    "item_type": "person",
+    "entity_type": "person",
 }
 ```
 
@@ -91,7 +93,7 @@ Summary represents a manualy managed item.
 
 ```json
 {
-"item_type": "summary",
+    "entity_type": "summary",
 }
 ```
 
@@ -101,6 +103,6 @@ Picture Gallery
 
 ```json
 {
-    "item_type": "picture-gallery",
+    "entity_type": "picture-gallery",
 }
 ```
