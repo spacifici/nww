@@ -1,5 +1,5 @@
 doctype html5
-html(lang="en", ng-app="jetztMgmtApp")
+html(lang="en")
     head
         meta(name="viewport", content="width=device-width, initial-scale=1")
         meta(charset="utf-8")
@@ -12,55 +12,85 @@ html(lang="en", ng-app="jetztMgmtApp")
         script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
 
         style
-            .week {
+            .day,
+            .week, 
+            .month,
+            .year {
                 height: 0px;
                 width: 0px;
                 transition-property: height, width;
                 transition-duration: 0s;
             }
 
+            .day .entity {
+                font-size: 18px;
+                transform: scale(0);
+            }
+
             .week .entity {
-                font-size: 20px;
+                font-size: 22px;
                 transform: scale(0);
             }
 
             .month .entity {
                 font-size: 26px;
                 font-weight: bold;
+                transform: scale(0);
             }
 
-            .scale-week .week {
+            .year .entity {
+                font-size: 32px;
+                font-weight: bold;
+                transform: scale(0);
+            }
+
+            .scale-year .year,
+            .scale-month .month,
+            .scale-month .year,
+            .scale-week .week,
+            .scale-week .month,
+            .scale-week .year,
+            .scale-day .day,
+            .scale-day .week,
+            .scale-day .month,
+            .scale-day .year {
                 height: auto;
                 width: auto;
                 transition-property: height, width;
                 transition-duration: 1s;
             }
 
-            .scale-week .week .entity {
-                transform: scale(1);
-                transition-duration: .25s;
-            }
 
-            //- .scale-week .week-wrapper {
-            //-     height: auto;
-            //-     width: auto;
-            //-     transition-property: height, width;
-            //-     //- transition-duration: 3s, 5s, 3s, 5s;
-            //- }
+            .scale-year .year .entity,
+            .scale-month .month .entity,
+            .scale-month .year .entity,
+            .scale-week .week .entity,
+            .scale-week .month .entity,
+            .scale-week .year .entity,
+            .scale-day .day .entity,
+            .scale-day .week .entity,
+            .scale-day .month .entity,
+            .scale-day .year  .entity {
+                transform: scale(1);
+                transition-duration: 0.25s;
+            }
 
         script
             $(document).ready(function() {
                 $('.time-span').click(function(event) {
-                    var newType = $(event.target).text().toLocaleLowerCase();
-
-                    $('.timeline').addClass('scale-week');
-                    
-                    console.log('OK')
+                    var newScaleType = $(event.target).text().toLocaleLowerCase();
+                    $('.container')
+                        .removeClass('scale-day scale-week scale-month scale-year')
+                        .addClass('scale-' + newScaleType);
                 });
+                
+                // Patch classes
+                $("<style type='text/css'> .entity { transition-duration: 0.25s; } </style>").appendTo('head');
+                $("<style type='text/css'> .day, .week, .month, .year { transition-duration: 1s; } </style>").appendTo('head');
             });
 
     body
-        div.container
+        div.container.scale-month
             div.row
                 div.col-lg-12(style="margin-bottom: 30px; margin-top: 10px;")
                     div.btn-group
@@ -70,7 +100,7 @@ html(lang="en", ng-app="jetztMgmtApp")
                         button.btn.btn-default.time-span Year
 
             for period in items.data
-                div.row.timeline(style="margin-bottom: 10px;")
+                div.row(style="margin-bottom: 10px;")
                     hr
                     div.col-lg-6(style="text-align: right;")
                         for entity in period.entities[::2]

@@ -9,6 +9,13 @@ app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 @app.route('/timeline')
 def version():
 
+    w0 = {
+        'title': 'Yearly Title',
+        'description': 'Description',
+        'weight': 'year',
+        'importance': 1,
+    }
+
     w1 = {
         'title': 'Monthly Title',
         'description': 'Description',
@@ -17,9 +24,16 @@ def version():
     }
 
     w2 = {
-        'title': 'Daily Title',
+        'title': 'Weekly Title',
         'description': 'Description',
         'weight': 'week',
+        'importance': 1,
+    }
+
+    w3 = {
+        'title': 'Daily Title',
+        'description': 'Description',
+        'weight': 'day',
         'importance': 1,
     }
 
@@ -28,7 +42,7 @@ def version():
         'data': [
             {
                 'period_start_ts': 'Oct, 2014',
-                'entities': [w1, w2, w2, w1, w2, w2, w2, w1, w1, w1],
+                'entities': [w1, w0, w3, w3, w2, w3, w3, w2, w3, w1, w2, w2, w2, w1, w1, w1],
             },
             {
                 'period_start_ts': 'Sep, 2014',

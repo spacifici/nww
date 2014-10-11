@@ -1,0 +1,17 @@
+{
+    "entity_type": "summary",
+    "weight": "month",
+    "languages": ["en", "ru"],
+    "title": "",
+    "snippet": "",
+    "resources": {
+        "articles": [
+            "http://www.pravda.com.ua/news/2014/10/8/7040079/", 
+            "http://zn.ua/ECONOMICS/polovinu-reversnyh-postavok-gaza-v-ukrainu-obespechivaet-norvezhskiy-kontrakt-155352_.html"
+        ]
+    },
+    "approved": {
+        "tags": ["ukraine", "russia", "gas", "gas-reimport", "economy", "norvegian gas"]
+    }
+
+}
