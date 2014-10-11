@@ -1,0 +1,83 @@
+doctype html5
+html(lang="en", ng-app="jetztMgmtApp")
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        meta(charset="utf-8")
+        title Timeline
+
+        //- Bootstrap  
+        link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
+        link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css", rel="stylesheet")
+        script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+        script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+
+        style
+            .week {
+                height: 0px;
+                width: 0px;
+                transition-property: height, width;
+                transition-duration: 0s;
+            }
+
+            .week .entity {
+                font-size: 20px;
+                transform: scale(0);
+            }
+
+            .month .entity {
+                font-size: 26px;
+                font-weight: bold;
+            }
+
+            .scale-week .week {
+                height: auto;
+                width: auto;
+                transition-property: height, width;
+                transition-duration: 1s;
+            }
+
+            .scale-week .week .entity {
+                transform: scale(1);
+                transition-duration: .25s;
+            }
+
+            //- .scale-week .week-wrapper {
+            //-     height: auto;
+            //-     width: auto;
+            //-     transition-property: height, width;
+            //-     //- transition-duration: 3s, 5s, 3s, 5s;
+            //- }
+
+        script
+            $(document).ready(function() {
+                $('.time-span').click(function(event) {
+                    var newType = $(event.target).text().toLocaleLowerCase();
+
+                    $('.timeline').addClass('scale-week');
+                    
+                    console.log('OK')
+                });
+            });
+
+    body
+        div.container
+            div.row
+                div.col-lg-12(style="margin-bottom: 30px; margin-top: 10px;")
+                    div.btn-group
+                        button.btn.btn-default.time-span Day
+                        button.btn.btn-default.time-span Week
+                        button.btn.btn-default.time-span Month
+                        button.btn.btn-default.time-span Year
+
+            for period in items.data
+                div.row.timeline(style="margin-bottom: 10px;")
+                    hr
+                    div.col-lg-6(style="text-align: right;")
+                        for entity in period.entities[::2]
+                            div.left(class=entity.weight)
+                                div.entity {{ entity.title }} {{ entity.description }}
+                    div.col-lg-6
+                        for entity in period.entities[1:][::2]
+                            div.right(class=entity.weight)
+                                div.entity {{ entity.title }} {{ entity.description }}
+  
