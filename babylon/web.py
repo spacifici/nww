@@ -155,13 +155,15 @@ def ensure_image_urls(article):
         person['url'] = url_for('.image',
             entity='person',
             handle=person['handle'],
-            category='icon')
+            category='icon',
+            _external=True)
 
     for topic in meta.get('topics', []):
         topic['url'] = url_for('.image',
             entity='topic',
             handle=topic['handle'],
-            category='icon')
+            category='icon',
+            _external=True)
 
     return article
 
