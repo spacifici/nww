@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
         config.vm.provision :shell, inline: <<-eos
             sudo apt-get install -y python-pip mongodb-server redis-server
             sudo pip install --upgrade pip
-            sudo pip install -e /vagrant/prototype
+            sudo pip install -r /vagrant/prototype/requirements.txt
             sudo pip install ipython
             sudo gem install foreman -v 0.60
         eos
