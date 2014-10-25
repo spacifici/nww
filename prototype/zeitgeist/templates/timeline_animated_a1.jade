@@ -1,0 +1,147 @@
+doctype html5
+html(lang="en")
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        meta(charset="utf-8")
+        title Timeline
+
+        //- Bootstrap  
+        link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css", rel="stylesheet")
+        link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css", rel="stylesheet")
+        script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+        script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+
+        //- Animations
+        link(href="/static/animate.css", rel="stylesheet")
+
+        script
+            var animationEvents = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+
+            function scaleAlignSelectorForScale(align) {
+                return function(scale) {
+                    return '.entry-wrapper.' + align + '.scale-' + scale;
+                }
+            }
+
+            function showEntries(scales) {
+                var leftSelectors = scales.map(scaleAlignSelectorForScale('left')).join(', '),
+                    rightSelectors = scales.map(scaleAlignSelectorForScale('right')).join(', ');
+
+                $(leftSelectors)
+                    .show(100)
+                    .removeClass('bounceOutLeft')
+                    .addClass('animation bounceInLeft');
+                
+                $(rightSelectors)
+                    .show(100)
+                    .removeClass('bounceOutRight')
+                    .addClass('animation bounceInRight');
+            }
+
+            function hideEntries(scales) {
+                var leftSelectors = scales.map(scaleAlignSelectorForScale('left')).join(', '),
+                    rightSelectors = scales.map(scaleAlignSelectorForScale('right')).join(', ');
+
+                $(leftSelectors)
+                    .removeClass('bounceInLeft')
+                    .addClass('animation bounceOutLeft')
+                    .hide(750);
+                
+                $(rightSelectors)
+                    .removeClass('bounceInRight')
+                    .addClass('animation bounceOutRight')
+                    .hide(750);
+            }
+
+            function setDateScale(scale) {
+                var scaleClasses = ['day', 'week', 'month', 'year'],
+                    firstVisibleIdx = scaleClasses.indexOf(scale),
+                    hiddenClasses = scaleClasses.slice(0, firstVisibleIdx),
+                    visibleClasses = scaleClasses.slice(firstVisibleIdx);
+
+                hideEntries(hiddenClasses);
+                showEntries(visibleClasses);
+            }
+
+            $(document).ready(function() {
+                setDateScale('month')
+                
+                $('.scale-timeline').click(function() {
+                    setDateScale($(this).attr('data-date-scale'));
+                });
+
+                //- $('.entry-wrapper').one(animationEvents, function() {
+                //-     console.log('animation ended...'
+                //- });
+            });
+
+        style
+            .left { float: right; }
+            .right { float: left; }
+
+            .entry-wrapper {
+                border-radius: 5px;
+                border: 1px solid #E8E8E8;
+                margin-bottom: 15px;
+            }
+
+            .article {
+                position: relative;
+                padding: 10px 40px;
+            }
+
+            .animation-delay-40 { animation-duration: .40s; }
+            .animation-delay-50 { animation-duration: .50s; }
+            .animation-delay-60 { animation-duration: .60s; }
+            .animation-delay-70 { animation-duration: .70s; }
+            .animation-delay-80 { animation-duration: .80s; }
+
+
+
+    body
+        div.container
+            div.row
+                div.col-lg-12(style="margin-bottom: 30px; margin-top: 10px;")
+                    div.btn-group
+                        button.btn.btn-default.scale-timeline(data-date-scale='year') Year
+                        button.btn.btn-default.scale-timeline(data-date-scale='month') Month
+                        button.btn.btn-default.scale-timeline(data-date-scale='week') Week
+                        button.btn.btn-default.scale-timeline(data-date-scale='day') Day
+
+
+            div.row(style="margin-bottom: 10px;")
+                div.col-lg-6
+                    div.entry-wrapper.left.scale-day.animation-delay-80(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD DAY
+                    div.entry-wrapper.left.scale-week.animation-delay-70(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD WEEK
+                    div.entry-wrapper.left.scale-month.animation-delay-50(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD MONTH
+                    div.entry-wrapper.left.scale-year.animation-delay-60(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD YEAR
+                    div.entry-wrapper.left.scale-day.animation-delay-50(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD DAY
+                    div.entry-wrapper.left.scale-week.animation-delay-70(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD WEEK
+                    div.entry-wrapper.left.scale-month.animation-delay-80(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD MONTH
+                    div.entry-wrapper.left.scale-year.animation-delay-60(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD YEAR
+                    
+                div.col-lg-6
+                    div.entry-wrapper.right.scale-month.animation-delay-60(style='display: none;')
+                        div.article
+                            h1 HELLO WORLD
+                    div.entry-wrapper.right.scale-week.animation-delay-50(style='display: none;')
+                        div.infographic
+                            img(src='/static/mh17/infographic-nations.jpg', width='300px')
+
+

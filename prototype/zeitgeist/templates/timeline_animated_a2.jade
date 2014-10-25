@@ -1,0 +1,68 @@
+mixin tl_article(e)
+    .timeline-entry(class=tl_entry_classes(e))
+        .col-lg-12 
+            .extra 
+            .badge
+            .content ARTICLE {{ e }}
+
+mixin tl_quote(e)
+    .row-entry.quote(class=tl_entry_classes(e))
+        .col-lg-12
+            .extra 
+            .badge
+            .content QUOTE {{ e }}
+
+mixin tl_infographic(e)
+    .row-entry.quote(class=tl_entry_classes(e))
+        .col-lg-12 INFOGRAPHIC {{ e }}
+
+mixin tl_gallery(e)
+    .row-entry.quote(class=tl_entry_classes(e))
+        .col-lg-12 GALLERY {{ e }}
+
+doctype html5
+html(lang="en")
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        meta(charset="utf-8")
+        title Timeline
+
+        link(href="/static/timeline/css/reset.css", rel="stylesheet")
+        link(href="/static/timeline/css/timeline.css", rel="stylesheet")
+        script(src="/static/timeline/css/modernizr.css")
+        script(src="/static/timeline/css/jquery.css")
+
+        style
+            .xxx {
+                visibility: hidden;
+            }
+
+        script
+            $(document).ready(function() {
+
+            })
+                
+    body
+        section.timeline.container
+            for entry in entries
+                .timeline-block(class=tl_entry_classes(entry))
+                    .timeline-img.picture
+                        img(src='/static/timeline/img/icon-picture.svg')
+                    .timeline-content
+                        h2  Title of section 1 {{ entry.scale }}
+                        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.
+                        a.read-more Read more
+                        span.date Jan 14
+
+                //- if entry.type == 'article'
+                //-     +tl_article(entry)
+                //- if entry.type == 'quote'
+                //-     +tl_quote(entry)
+                //- if entry.type == 'infographic'
+                //-     +tl_infographic(entry)
+                //- if entry.type == 'gallery'
+                //-     +tl_gallery(entry)
+
+
+                        
+

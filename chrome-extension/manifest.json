@@ -1,0 +1,56 @@
+{
+    "manifest_version": 2,
+    "name": "News++",
+    "description": "Tag Your News",
+    "version": "1.0",
+    
+    "content_security_policy": "script-src 'self' https://cdn.mxpnl.com; object-src 'self'",
+
+    "permissions": [
+        "http://*/*",
+        "https://*/*",
+        "tabs",
+        "activeTab",
+        "background",
+        "contextMenus"
+    ],
+    
+    "page_action": {
+        "default_icon": {
+            "38": "img/icon@38.png",
+            "19": "img/icon@19.png"
+        },
+        "default_title": "News++"
+    },
+
+    "web_accessible_resources": [
+        "partials/root.html"
+    ],
+
+    "background": {
+        "scripts": ["js/background.js"]
+    },
+
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*", 
+                "https://*/*"
+            ],
+            "js": [
+                "js/vendor/jquery.js",
+                "js/vendor/angular.js",
+                "js/vendor/angular-route.js",
+                "js/vendor/angular-resource.js",
+                "js/app-loader.js",
+                "js/app.js"
+            ],
+            "css": [
+                "css/vendor/animate.css",
+                "css/main.css"
+            ],
+            "all_frames": false
+        }
+    ]
+
+}

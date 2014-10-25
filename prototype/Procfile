@@ -1,0 +1,1 @@
+web: gunicorn zeitgeist.web:app --reload --log-file=-

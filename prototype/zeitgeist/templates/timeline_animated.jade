@@ -1,0 +1,104 @@
+doctype html5
+html(lang="en")
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        meta(charset="utf-8")
+        link(rel="stylesheet", href="/static/timeline.css")
+
+        style
+
+body
+    ul.timeline
+        li.year 2013
+        li.event.offset-first Something amazing happened today, but it's a secret    
+        li.event
+            | Timeline.css is <b>dynamic</b>, <b>responsive</b> and optimized to <b>demonstrate events</b> in your life in a <b>simple and clear</b> way
+        
+        li.event
+          a(href="http://christian-fei.com")
+                | made with &lt;3 by 
+                img.no-box.centered(src="https://s3-eu-west-1.amazonaws.com/cf.img/var/face.svg")
+          
+
+        li.event
+            a(href="http://codepen.io/christian-fei/pen/BJily") 
+                | Open source project on codepen.io
+                img.no-box.centered(src="http://davidwalsh.name/demo/codepenLogo.png")
+          
+        li.event
+            Look, a sleepy kitten: <br/>
+            img.no-box(src="http://ih2.redbubble.net/image.10311838.0354/flat,550x550,075,f.jpg")
+            a(href='http://ih2.redbubble.net/image.10311838.0354/flat,550x550,075,f.jpg') &copy;
+        
+        li.year 2012
+        li.event.offset-first
+            p To infinity...
+            img.centered.no-box(src="http://upload.wikimedia.org/wikipedia/en/7/75/Buzz-lightyear-toy-story-3-wallpaper.jpg")
+            a(href='http://upload.wikimedia.org/wikipedia/en/7/75/Buzz-lightyear-toy-story-3-wallpaper.jpg') &copy;
+      
+        li.event
+            p ... and beyond!
+            img.centered.no-box(src="https://s3-eu-west-1.amazonaws.com/cf.img/posts/2013/05/woody.jpg")
+            a(href='https://s3-eu-west-1.amazonaws.com/cf.img/posts/2013/05/woody.jpg') &copy;
+
+        li.event
+            p ... and beyond!
+            img.centered.no-box(src="https://s3-eu-west-1.amazonaws.com/cf.img/posts/2013/05/woody.jpg")
+            a(href='https://s3-eu-west-1.amazonaws.com/cf.img/posts/2013/05/woody.jpg') &copy;
+
+        li.event
+            p ... and beyond!
+            img.centered.no-box(src="https://s3-eu-west-1.amazonaws.com/cf.img/posts/2013/05/woody.jpg")
+            a(href='https://s3-eu-west-1.amazonaws.com/cf.img/posts/2013/05/woody.jpg') &copy;
+
+//- doctype html5
+//- html(lang="en")
+//-     head
+//-         meta(name="viewport", content="width=device-width, initial-scale=1")
+//-         meta(charset="utf-8")
+//-         title Timeline
+
+//-         script(src="/static/jquery.js")
+//-         script(src="/static/masonry.pkgd.js")
+
+//-         style
+//-             .timeline {
+//-                 list-style-type: none;
+//-                 margin: 0px;
+//-                 padding: 0px;
+//-                 width: 860px;
+//-             }
+
+//-             .entry {
+//-                 width: 430px;
+//-                 min-height: 50px;
+//-                 border: 1px solid gray;
+//-                 margin-bottom: 10px;
+//-             }
+
+//-             .entry.left {
+//-             }
+
+//-             .entry.right {
+//-                 margin-left: 434px;
+//-             }
+
+//-             .timeline-pillar {
+//-                 position: absolute;
+//-                 height: 100%;
+//-                 width: 2px;
+//-                 background-color: red;
+//-                 left: 440px;
+//-             }
+
+
+
+//-     body
+//-         div.container
+//-             div.timeline-pillar
+//-             ul.timeline
+//-                 for entry in data
+//-                     if entry.type == 'date-marker'
+//-                         li.marker.date-marker(class="{{ entry.scale }}") {{ entry.value }}
+//-                     if entry.type == 'article'
+//-                         li.entry.article(class="{{ entry.column }} {{ entry.scale }}") {{ entry.title }}

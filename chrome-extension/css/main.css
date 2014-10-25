@@ -1,0 +1,27 @@
+.xxx-app {
+    position: fixed;
+    height: 100%;
+    width: 380px;
+    top: 0px;
+    right: -40px;
+    z-index: 999;
+    display: none;
+}
+
+.xxx-app .xxx-app-content {
+    position: relative;
+    background: rgba(76, 76, 94, 0.972549);
+    box-shadow: rgba(0, 0, 0, 0.498039) -2px 0px 10px;
+    height: 100%;
+    opacity: 0.98;
+    animation-duration: 1s;
+    padding-right: 40px;
+}
+
+.xxx-app .xxx-app-content .xxx-app-footer {
+    position: absolute;
+    bottom: 0px;
+    width: 340px;
+    background-color: gray;
+}
+

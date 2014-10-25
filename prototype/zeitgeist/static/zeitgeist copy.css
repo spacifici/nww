@@ -1,0 +1,55 @@
+body {
+    font: 11px "Lucida Grande","Lucida Sans Unicode",Lucida,Verdana,Arial,sans-serif;
+    margin: 0px;
+    background: #1a1f25;
+    color: #fff;
+}
+
+.container {
+    position: relative;
+    overflow: hidden;
+}
+
+ul.timeline {
+    width:920px; /* total width */
+    position: relative;
+    list-style: none;
+    overflow: hidden; 
+    padding: 0px;
+    margin: 0px;
+}
+
+.timeline > li {
+    width: 450px;
+    background: #2A3036;
+    position: relative;
+}
+
+.timeline > li:before {
+    border: 7px solid;
+    content: '';
+    display: block;
+    position: absolute;
+}
+
+li:nth-child(even) {
+    float:right;
+    clear:right;
+}
+
+li:nth-child(odd) {
+    float:left;
+    clear:left;
+}
+
+.timeline > li:nth-child(even):before {
+    border-color: #fff #e5e5e5 #fff #fff;
+    right: 100%;
+    top: 10px;
+}
+
+.timeline > li:nth-child(odd):before {
+    border-color: #fff #fff #fff #e5e5e5;
+    left: 100%;
+    top: 10px;
+}

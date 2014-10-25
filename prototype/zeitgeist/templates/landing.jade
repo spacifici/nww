@@ -1,0 +1,11 @@
+doctype html5
+html(lang="en")
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        meta(charset="utf-8")
+        title Babylon - New way to read the news
+
+    body
+        for e in entries
+            div 
+                a(href=e.url) {{ e }}
