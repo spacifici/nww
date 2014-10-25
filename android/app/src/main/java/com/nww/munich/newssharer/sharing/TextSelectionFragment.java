@@ -20,24 +20,17 @@ import static android.view.View.OnClickListener;
 /**
  * Created by Stefano Pacifici on 25/10/14.
  */
-public class TextSelectionFragment extends Fragment implements OnClickListener {
+public class TextSelectionFragment extends Fragment {
 
     private WebView webView;
-    private Button button;
-    private ProgressDialog progressDialog;
-    private String quote;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_text_selection, null);
         webView = (WebView) view.findViewById(R.id.webView);
-        button = (Button) view.findViewById(R.id.addPeopleButton);
-        button.setEnabled(false);
 
         // Set listeners
         webView.setWebViewClient(new MyWebClient());
-        progressDialog = null;
-        button.setOnClickListener(this);
 
         return view;
     }
@@ -61,17 +54,10 @@ public class TextSelectionFragment extends Fragment implements OnClickListener {
         cm.removePrimaryClipChangedListener(clipboarPrimaryClipChangedListener);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.addPeopleButton:
-                MainFragment main = (MainFragment) getTargetFragment();
-                main.setQuote(quote);
-                getFragmentManager().popBackStack();
-                break;
-            default:
-                break;
-        }
+    private void backSettingQuote(String quote) {
+        MainFragment main = (MainFragment) getTargetFragment();
+        main.setQuote(quote);
+        getFragmentManager().popBackStack();
     }
 
     private final class MyWebClient extends WebViewClient {
@@ -94,11 +80,10 @@ public class TextSelectionFragment extends Fragment implements OnClickListener {
             new ClipboardManager.OnPrimaryClipChangedListener() {
         @Override
         public void onPrimaryClipChanged() {
-            button.setEnabled(true);
 
             ClipboardManager cm = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData.Item item = cm.getPrimaryClip().getItemAt(0);
-            quote = item.getText().toString();
+            backSettingQuote(item.getText().toString());
         }
     };
 }
