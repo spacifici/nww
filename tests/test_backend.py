@@ -1,12 +1,29 @@
 from babylon import backends
+from babylon import qs
+from babylon import topics
+
 
 
 def test_article_get_or_create():
     url = 'fun'
     a = backends.get_article(url)
-
     assert a['title'] == ''
     assert a['source_url'] == url
+
+def test_quote():
+    # insert quote
+    qs.template('hi', '110', 'http://cliqz.com/', '123', 'Thomas', 'T')
+    qs.store(backends.quote_collections, 'hi', '110', 'http://cliqz.com/', '123', 'Thomas', 'T')
+    # retrieve quote
+    for q in qs.retrieve(backends.quote_collections, person_id='T'):
+        assert q['type'] == "quote"
+
+
+def test_topics():
+    topics.store(backends.topic_collections, 'title', '', {'a':'b'})
+    for t in topics.retrieve(backends.topic_collections, title='title'):
+        assert t['entity_type'] == 'topic'
+
 
 def test_store_article():
     url = 'fun'

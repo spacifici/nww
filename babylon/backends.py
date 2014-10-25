@@ -8,6 +8,8 @@ from bson.objectid import ObjectId
 import article
 import person
 import tag
+import qs
+import topics
 
 
 redis_url = os.environ['REDISCLOUD_URL']
@@ -87,3 +89,52 @@ def get_meta():
         "tags": []
         }
     }
+QUOTES_COLLECTION = 'quotes'
+TOPICS_COLLECTION = 'topics'
+
+db = mongo_conn[MONGO_DB_NAME]
+
+articles = db[ARTICLES_COLLECTION]
+quote_collections = db[QUOTES_COLLECTION]
+topic_collections = db[TOPICS_COLLECTION]
+
+
+# quotes
+def get_quote(_id=None, person_id=None, source_id=None):
+    if _id:
+        query = {'_id': _id}
+    if person_id:
+        query = {'person_id': person_id}
+    if source_id:
+        query = {'source_id': source_id}
+    for q in quote_collections.find(query):
+            yield q
+
+
+def store_quote(quote_content, time, source_url, person_name,
+                source_id=None, person_id=None, topics=[], tags=[]):
+    content = qs.template(
+        quote_content, time, source_url, person_name,
+        source_id, person_id, topics, tags)
+    return quote_collections.insert(content)
+
+
+# topics
+def store_topic(title, desc='', url='', people='', translation={}, editors={}):
+    # if topic exist, update
+    if topic_collections.find({'title': title}):
+        return topic_collections.update(
+            {'title': title},
+            {'$addToSet': {"url": url, "people": people}})
+    else:
+        content = topics.template(title, desc, url, people, translation, editors)
+        return topic_collections.insert(content)
+
+
+def get_topic(_id=None, title=None):
+    if _id:
+        query = {'_id': _id}
+    if title:
+        query = {'title': title}
+    for q in topic_collections.find(query):
+            yield q
