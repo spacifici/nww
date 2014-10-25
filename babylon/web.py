@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import logging
+import sys
+
 from flask import Flask, render_template, url_for, jsonify, request
 from babylon import backends
 from glob import glob
@@ -7,6 +10,18 @@ from os import path
 
 app = Flask(__name__)
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
+
+# Configure logging.
+app.logger.setLevel(logging.DEBUG)
+del app.logger.handlers[:]
+
+handler = logging.StreamHandler(stream=sys.stdout)
+handler.setLevel(logging.DEBUG)
+handler.formatter = logging.Formatter(
+    fmt=u"%(asctime)s level=%(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%SZ",
+)
+app.logger.addHandler(handler)
 
 
 @app.context_processor
