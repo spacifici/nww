@@ -12,85 +12,112 @@ html(lang="en")
         script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
 
         style
-            .day,
-            .week, 
-            .month,
-            .year {
+            .left {
+                float: right;
+            }
+
+            .entity-container {
                 height: 0px;
                 width: 0px;
-                transition-property: height, width;
-                transition-duration: 0s;
+                margin: 0px 5px;
             }
 
-            .day .entity {
-                font-size: 18px;
+            .entity {
+                margin-bottom: 2em;
                 transform: scale(0);
             }
 
-            .week .entity {
-                font-size: 22px;
-                transform: scale(0);
-            }
-
-            .month .entity {
-                font-size: 26px;
-                font-weight: bold;
-                transform: scale(0);
-            }
-
-            .year .entity {
-                font-size: 32px;
-                font-weight: bold;
-                transform: scale(0);
-            }
-
-            .scale-year .year,
+            .scale-year  .year,
             .scale-month .month,
-            .scale-month .year,
-            .scale-week .week,
-            .scale-week .month,
-            .scale-week .year,
-            .scale-day .day,
-            .scale-day .week,
-            .scale-day .month,
-            .scale-day .year {
+            .scale-week  .week,
+            .scale-day   .day {
                 height: auto;
                 width: auto;
-                transition-property: height, width;
-                transition-duration: 1s;
             }
 
-
-            .scale-year .year .entity,
+            .scale-year  .year  .entity,
             .scale-month .month .entity,
-            .scale-month .year .entity,
-            .scale-week .week .entity,
-            .scale-week .month .entity,
-            .scale-week .year .entity,
-            .scale-day .day .entity,
-            .scale-day .week .entity,
-            .scale-day .month .entity,
-            .scale-day .year  .entity {
+            .scale-week  .week  .entity,
+            .scale-day   .day   .entity {
                 transform: scale(1);
-                transition-duration: 0.25s;
+                transition-duration: .25s;
             }
+
+            .entity.article {
+                border-radius: 5px;
+                border: 1px solid #E8E8E8;
+                position: relative;
+            }
+
+            .entity.article .teaser {
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 120px;
+                height: 100%;
+                position: absolute;
+            }
+
+            .entity.article .title {
+                display: block;
+                font-weight: bold;
+            }
+
+            .entity.article .description {
+                display: block;
+            }
+
+            .left .entity.article .title, 
+            .left .entity.article .description {
+                margin-left: 5;
+                margin-right: 125px;
+            }
+
+            .right .entity.article .title,
+            .right .entity.article .description {
+                margin-left: 5;
+                margin-left: 125px;
+            }
+
+            .right .entity.article .teaser {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            .left .entity.article .teaser {
+                position: absolute;
+                right: 0px;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
 
         script
+            var scaleClasses = ['scale-day', 'scale-week', 'scale-month', 'scale-year'];
+            
+            function setScale(scale) {
+                var firstVisibleIdx = scaleClasses.indexOf(scale),
+                    hiddenClasses = scaleClasses.slice(0, firstVisibleIdx).join(' '),
+                    visibleClasses = scaleClasses.slice(firstVisibleIdx).join(' ');
+
+                $('.container').removeClass(hiddenClasses).addClass(visibleClasses);
+            }
+
             $(document).ready(function() {
+
+                setScale('scale-month');
+
                 $('.time-span').click(function(event) {
                     var newScaleType = $(event.target).text().toLocaleLowerCase();
-                    $('.container')
-                        .removeClass('scale-day scale-week scale-month scale-year')
-                        .addClass('scale-' + newScaleType);
+                    setScale('scale-' + newScaleType);
                 });
                 
-                // Patch classes
-                $("<style type='text/css'> .entity { transition-duration: 0.25s; } </style>").appendTo('head');
-                $("<style type='text/css'> .day, .week, .month, .year { transition-duration: 1s; } </style>").appendTo('head');
+                // Patch classes entity's transition duration
+                //- $("<style type='text/css'> .entity { transition-duration: .25s; } </style>").appendTo('head');
             });
 
     body
-        div.container.scale-month
+        div.container
             div.row
                 div.col-lg-12(style="margin-bottom: 30px; margin-top: 10px;")
                     div.btn-group
@@ -99,15 +126,26 @@ html(lang="en")
                         button.btn.btn-default.time-span Month
                         button.btn.btn-default.time-span Year
 
+
             for period in items.data
                 div.row(style="margin-bottom: 10px;")
                     hr
-                    div.col-lg-6(style="text-align: right;")
+                    div.col-lg-6
                         for entity in period.entities[::2]
-                            div.left(class=entity.weight)
-                                div.entity {{ entity.title }} {{ entity.description }}
+                            div.entity-container.left(class=entity.weight)
+                                div.entity.article
+                                    div.teaser(style='background-image: url({{ entity.thumbnail_url }});')
+                                    span.title {{ entity.title }}
+                                    p.description {{ entity.description }}
+                                    a(href=entity.url)
+
                     div.col-lg-6
                         for entity in period.entities[1:][::2]
-                            div.right(class=entity.weight)
-                                div.entity {{ entity.title }} {{ entity.description }}
-  
+                            div.entity-container.right(class=entity.weight)
+                                div.entity.article
+                                    div.teaser(style='background-image: url({{ entity.thumbnail_url }});')
+                                    span.title {{ entity.title }}
+                                    p.description {{ entity.description }}
+                                    a(href=entity.url)
+
+

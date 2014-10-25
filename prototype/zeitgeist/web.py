@@ -6,36 +6,47 @@ app = Flask(__name__)
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
 
 
+@app.context_processor
+def class_extractors():
+    def timeline_entry_classes(entry):
+        return ' '.join([entry['column'], entry['scale']])
+
+    return dict(tl_entry_classes=timeline_entry_classes)
+
+
+@app.route('/timeline/animated')
+def timeline_animated():
+    entries = [
+        {'column': 'left', 'type': 'article', 'scale': 'month'},
+        {'column': 'left', 'type': 'quote', 'scale': 'month xxx'},
+        {'column': 'right', 'type': 'article', 'scale': 'month yyy'},
+        {'column': 'left', 'type': 'article', 'scale': 'month'},
+        {'column': 'left', 'type': 'infographic', 'scale': 'month'},
+        {'column': 'left', 'type': 'gallery', 'scale': 'month'},
+    ] * 100
+
+
+    return render_template('timeline_animated_a2.jade', entries=entries)
+
+
 @app.route('/timeline')
 def version():
 
-    w0 = {
-        'title': 'Yearly Title',
-        'description': 'Description',
-        'weight': 'year',
-        'importance': 1,
+    base = {
+        'thumbnail_url': 'http://cdn1.spiegel.de/images/image-733534-galleryV9-kdyb.jpg',
+        'url': 'http://www.spiegel.de/panorama/justiz/bild-996540-733534.html',
+        'title': u'MH17-Absturz: Opfer-Angehörige fordern Schadensersatz von Niederlanden',
+        'description': u'Hinterbliebene von Opfern der abgestürzten Malaysia-Airlines-Maschine '
+                       u'mit der Flugnummer MH17 streben Schadensersatz vom niederländischen '
+                       u'Staat an. Sie monieren die schleppend vorangehenden Ermittlungen zum '
+                       u'Hergang der Katastrophe.',
+        'source': 'spiegel.de',
     }
 
-    w1 = {
-        'title': 'Monthly Title',
-        'description': 'Description',
-        'weight': 'month',
-        'importance': 1,
-    }
-
-    w2 = {
-        'title': 'Weekly Title',
-        'description': 'Description',
-        'weight': 'week',
-        'importance': 1,
-    }
-
-    w3 = {
-        'title': 'Daily Title',
-        'description': 'Description',
-        'weight': 'day',
-        'importance': 1,
-    }
+    w0 = dict({'weight': 'year'}, **base)
+    w1 = dict({'weight': 'month'}, **base)
+    w2 = dict({'weight': 'week'}, **base)
+    w3 = dict({'weight': 'day'}, **base)
 
     items = {
         'scale': 'month',
