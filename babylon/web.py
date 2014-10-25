@@ -36,6 +36,7 @@ def timeline():
     ]
     return render_template('timeline.jade', entries=entries)
 
+
 @app.route('/api/article/id', methods=['GET'])
 def article_id():
     return jsonify({})

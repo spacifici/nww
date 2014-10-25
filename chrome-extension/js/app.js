@@ -8,7 +8,8 @@ app.controller('RootCtrl', ['$scope',
         var Article = $resource(
             'http://localhost:5000/api/article',
             {
-                getCurrent: { method: 'GET' }
+                getId: { method: 'POST' },
+                get: { method: 'GET' },
                 update: { method:'POST' }
             }
         );
