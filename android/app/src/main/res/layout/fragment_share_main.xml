@@ -8,6 +8,20 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/article_title_background">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/titleTextView"
+                android:layout_margin="10dp"
+                android:ellipsize="end" />
+        </FrameLayout>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -26,20 +40,13 @@
 
         </LinearLayout>
 
-        <GridLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/peopleGridView"
-            android:padding="@dimen/gridviews_padding"
-            android:columnCount="3">
+            android:layout_height="fill_parent"
+            android:id="@+id/peopleLinearLayout">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_new"
-                android:id="@+id/addPeopleButton"
-                android:layout_gravity="fill" />
-        </GridLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -78,13 +85,20 @@
                 android:id="@+id/addQuoteButton"
                 android:layout_gravity="center" />
 
-            <Button
+            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/change"
-                android:id="@+id/changeQuoteButton"
-                android:layout_gravity="right|bottom"
-                android:visibility="invisible" />
+                android:layout_gravity="bottom|right"
+                android:background="@android:color/white"
+                android:padding="@dimen/gridviews_padding">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/change"
+                    android:id="@+id/changeQuoteButton"
+                    android:visibility="invisible" />
+            </FrameLayout>
         </FrameLayout>
 
         <LinearLayout
@@ -150,5 +164,6 @@
                 android:id="@+id/addTagButton"
                 android:layout_gravity="center" />
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

@@ -6,6 +6,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
 import java.net.URLEncoder;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Stefano Pacifici on 25/10/14.
@@ -19,6 +20,7 @@ public class ApiRequests {
 
     private ApiRequests() {
         okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(3, TimeUnit.SECONDS);
     }
 
     public void articleRequest(String url, Callback callback) {

@@ -19,5 +19,10 @@
     <string name="cant_contact_backend">Can\'t contact backend</string>
     <string name="error_parsing_backend_response">Error parsing JSON</string>
     <string name="change">Change</string>
+    <string name="angela_merkel">Angela Merkel</string>
+    <string name="chancellor_of_germany">Chancellor of Germany</string>
+    <string name="president_of_united_states">44th President of the United States</string>
+    <string name="president_of_russia">President of Russia</string>
+    <string name="president_of_france">President of France</string>
 
 </resources>
