@@ -24,7 +24,7 @@ mongo_url = os.environ['MONGOHQ_URL']
 mongo_conn = pymongo.MongoClient(mongo_url)
 
 
-MONGO_DB_NAME = 'babylon'
+MONGO_DB_NAME = 'app30995050'
 
 ARTICLES_COLLECTION = 'articles'
 PERSONS_COLLECTION = 'persons'
