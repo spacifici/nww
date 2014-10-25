@@ -6,9 +6,10 @@ import urlparse
 from bson.objectid import ObjectId
 
 import article
+import meta
 import person
-import tag
 import qs
+import tag
 import topics
 
 
@@ -83,12 +84,9 @@ def json_ready(article):
     return article
 
 def get_meta():
-    return {"meta": {
-        "people": [],
-        "topics": [],
-        "tags": []
-        }
-    }
+    return meta.get_meta()
+
+    
 QUOTES_COLLECTION = 'quotes'
 TOPICS_COLLECTION = 'topics'
 

@@ -56,62 +56,8 @@ def timeline():
 @app.route('/api/article', methods=['GET'])
 def article_id():
     url = request.args.get('uri', 'NON')
-    # article = backends.get_article(url)
-
-    article = {
-        "id": "dummy-id",
-        "type": "",
-        "title": "",
-        "description": "",
-        "time": "",
-        "source_url": "",
-        "og": {
-            "title": "",
-            "type": "", 
-            "url": "",
-            "image": "",
-            "site_name": "",
-            "description": "",
-        },
-        "quotes": [],
-        "people": [],
-        "topics": [],
-        "tags": [],
-        "meta": {
-            "people": [
-                {
-                    "name": "Vladimir Putin",
-                    "handle": "vladimir-putin",
-                    "position": "President of Russian Federation"
-                },
-                {
-                    "name": "Angela Merkel",
-                    "handle": "angela-merkel",
-                    "position": "Chancellor of the Federal Republic of Germany"
-                }
-            ],
-            "topics": [
-                {
-                    "name": "MH 17 Crash",
-                    "handle": "mh-17-crash"
-                }
-            ],
-            "tags": [
-                {
-                    "name": "Global Energy",
-                    "handle": "global-energy"
-                },
-                {
-                    "name": "Economy",
-                    "handle": "economy"
-                }
-            ]
-        }
-    }
-
+    article = backends.get_article(url)
     ensure_image_urls(article)
-
-
     return jsonify(article)
 
 
@@ -123,8 +69,8 @@ def article():
 @app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
 def update_article(article_id):
     print 'update_article'
-    print request.get_json()
-    return jsonify({'id': 'OK'})
+    article = request.get_json()
+    return jsonify(article)
 
 
 @app.route('/img/<entity>/<handle>/<category>')
