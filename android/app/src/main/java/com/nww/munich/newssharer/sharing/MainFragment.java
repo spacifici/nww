@@ -5,16 +5,23 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nww.munich.newssharer.R;
 import com.nww.munich.newssharer.views.PersonView;
 import com.squareup.okhttp.Request;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,6 +41,7 @@ public class MainFragment extends Fragment implements OnClickListener {
     private Button addQuoteButton;
     private Button changeQuoteButton;
     private ArrayList<PersonView> personViews;
+    private ArrayList<CheckBox> topicsCheckBoxes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,13 +60,38 @@ public class MainFragment extends Fragment implements OnClickListener {
         changeQuoteButton.setOnClickListener(this);
 
         view.findViewById(R.id.addTagButton).setOnClickListener(this);
-        view.findViewById(R.id.addTopicsButton).setOnClickListener(this);
 
         ShareActivity activity = (ShareActivity) getActivity();
         titleTextView.setText(activity.articleTitle);
 
         addPersons();
+        setupTopics();
+
         return view;
+    }
+
+    private void setupTopics() {
+        ShareActivity activity = (ShareActivity) getActivity();
+        try {
+            JSONArray topics = activity.jsonArticle.getJSONObject("meta").getJSONArray("topics");
+            topicsCheckBoxes = new ArrayList<CheckBox>(topics.length());
+            for (int ix = 0; ix < topics.length(); ix++) {
+                JSONObject topic = topics.getJSONObject(ix);
+                String name = topic.getString("name");
+                CheckBox checkBox = new CheckBox(getActivity());
+
+                checkBox.setText(name);
+                LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                int margin = getResources().getDimensionPixelSize(R.dimen.gridviews_padding);
+                layoutParams.setMargins(margin, margin, margin, margin);
+                layoutParams.gravity = Gravity.LEFT;
+                topicsCheckBoxes.add(checkBox);
+
+                topicsLineraLayout.addView(checkBox, layoutParams);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void addPersons() {
@@ -88,14 +121,6 @@ public class MainFragment extends Fragment implements OnClickListener {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        ShareActivity activity = (ShareActivity)getActivity();
-        Request.Builder builder = new Request.Builder();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.addPeopleButton:
@@ -108,16 +133,9 @@ public class MainFragment extends Fragment implements OnClickListener {
             case R.id.addTagButton:
                 handleAddTag();
                 break;
-            case R.id.addTopicsButton:
-                handleAddTopics();
-                break;
             default:
                 break;
         }
-    }
-
-    private void handleAddTopics() {
-        throw new RuntimeException("Not yet implemented");
     }
 
     private void handleAddTag() {

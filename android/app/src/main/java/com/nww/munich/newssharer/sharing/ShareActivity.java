@@ -52,21 +52,29 @@ public class ShareActivity extends Activity {
                 String json = response.body().string();
                 Log.i("JSON", json);
                 jsonArticle = new JSONObject(json);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showMainFragment();
+                    }
+                });
             } catch (JSONException e) {
                 showErrorDialog(R.string.error_parsing_backend_response, true);
             }
         }
     };
 
+    private void showMainFragment() {
+        getFragmentManager().beginTransaction()
+                .add(R.id.container, new MainFragment())
+                .commit();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment())
-                    .commit();
-        }
 
         // Get intent, action and MIME type
         Intent intent = getIntent();

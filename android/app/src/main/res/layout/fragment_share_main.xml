@@ -125,12 +125,6 @@
             android:id="@+id/topicsLinearLayout"
             android:padding="@dimen/gridviews_padding">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_new"
-                android:id="@+id/addTopicsButton"
-                android:layout_gravity="center" />
         </LinearLayout>
 
         <LinearLayout
