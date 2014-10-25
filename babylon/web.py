@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, jsonify
 
 
 app = Flask(__name__)
@@ -36,6 +36,19 @@ def timeline():
     ]
     return render_template('timeline.jade', entries=entries)
 
+@app.route('/api/article/id', methods=['GET'])
+def article_id():
+    return jsonify({})
+
+
+@app.route('/api/article', methods=['GET'])
+def article():
+    return jsonify({})
+
+
+@app.route('/api/article', methods=['PUT', 'POST'])
+def update_article():
+    return jsonify({'id': 'OK'})
 
 # @app.route('/timeline/animated')
 # def timeline_animated():

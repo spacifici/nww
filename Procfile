@@ -1,1 +1,1 @@
-web: gunicorn zeitgeist.web:app --reload --log-file=-
+web: gunicorn babylon.web:app --reload --log-file=-

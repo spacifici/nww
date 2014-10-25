@@ -4,6 +4,17 @@ var app = angular.module('xxxApp', ['ngRoute'])
 
 app.controller('RootCtrl', ['$scope',
     function($scope) {
+
+        var Article = $resource(
+            'http://localhost:5000/api/article',
+            {
+                getCurrent: { method: 'GET' }
+                update: { method:'POST' }
+            }
+        );
+
+        alert('HERE')
+
         $scope.twitterMeta = getMeta('twitter:', 'name')
         $scope.facebookMeta = getMeta('og:', 'property')
 
@@ -12,6 +23,8 @@ app.controller('RootCtrl', ['$scope',
         $scope.markAsCrap = function() {
             alert('Crapy Article!')
         }
+
+
 
 
         // <link rel="canonical" href="http://www.spiegel.de/politik/deutschland/dobrindt-zu-pkw-maut-zugestaendnisse-geplant-a-997878.html">
