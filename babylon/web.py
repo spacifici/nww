@@ -85,7 +85,8 @@ def article():
 def update_article(article_id):
     print 'update_article'
     article = request.get_json()
-    return jsonify(article)
+    backends.store_article(article)
+    return jsonify({"success": True})
 
 
 @app.route('/img/<entity>/<handle>/<category>')
