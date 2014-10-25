@@ -3,7 +3,6 @@ from babylon import qs
 from babylon import topics
 
 
-
 def test_article_get_or_create():
     url = 'fun'
     a = backends.get_article(url)
@@ -12,16 +11,15 @@ def test_article_get_or_create():
 
 def test_quote():
     # insert quote
-    qs.template('hi', '110', 'http://cliqz.com/', '123', 'Thomas', 'T')
-    qs.store(backends.quote_collections, 'hi', '110', 'http://cliqz.com/', '123', 'Thomas', 'T')
+    backends.store_quote('hi', '110', 'http://cliqz.com/', '123', 'Thomas', 'T')
     # retrieve quote
-    for q in qs.retrieve(backends.quote_collections, person_id='T'):
+    for q in backends.get_quote(person_id='T'):
         assert q['type'] == "quote"
 
 
 def test_topics():
-    topics.store(backends.topic_collections, 'title', '', {'a':'b'})
-    for t in topics.retrieve(backends.topic_collections, title='title'):
+    backends.store_topic('title', '', {'a': 'b'})
+    for t in backends.get_topic(title='title'):
         assert t['entity_type'] == 'topic'
 
 
