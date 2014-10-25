@@ -17,6 +17,7 @@ Vagrant.configure("2") do |config|
             sudo apt-get install -y python-pip mongodb-server redis-server
             sudo pip install --upgrade pip
             sudo pip install -r /vagrant/requirements.txt
+            sudo pip install -r /vagrant/requirements-test.txt
             sudo pip install ipython
             sudo gem install foreman -v 0.60
         eos
