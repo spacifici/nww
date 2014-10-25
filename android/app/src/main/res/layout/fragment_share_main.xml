@@ -127,6 +127,7 @@
 
         </LinearLayout>
 
+        <!--
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -158,6 +159,7 @@
                 android:id="@+id/addTagButton"
                 android:layout_gravity="center" />
         </LinearLayout>
+        -->
 
     </LinearLayout>
 </ScrollView>
