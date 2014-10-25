@@ -2,8 +2,8 @@
 
 var app = angular.module('xxxApp', ['ngRoute', 'ngResource'])
 
-app.controller('RootCtrl', ['$scope', '$resource',
-    function($scope, $resource) {
+app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
+    function($scope, $resource, $timeout) {
 
         var Article = $resource(
             'http://localhost:5050/api/article/:id',
@@ -21,20 +21,89 @@ app.controller('RootCtrl', ['$scope', '$resource',
 
         $scope.isLoading = true;
 
+
         Article.getByUrl({uri: window.location.href})
             .$promise.then(function(article) {
+                console.log(article);
                 $scope.facebookMeta = getMeta('og:', 'property');
                 $scope.article = article;
-                $scope.article.rating = 3;
+                $scope.article.rating = 0;
                 $scope.article.og = $scope.facebookMeta; 
                 $scope.isLoading = false;
+                $scope.article.people = [
+                    {
+                        handle: "angela-merkel",
+                        img_url: "http://sleepy-mountain-8434.herokuapp.com/img/person/angela-merkel/icon",
+                        name: "Angela Merkel",
+                        position: "Chancellor of the Federal Republic of Germany"
+                    }
+                ];
+                $scope.article.topics = [
+                    {
+                        handle: "mh-17-crash",
+                        img_url: "http://sleepy-mountain-8434.herokuapp.com/img/topic/mh-17-crash/icon",
+                        name: "MH 17 Crash"
+                    }
+                ];
+                $scope.article.tags = [
+                    {
+                        handle: "economy",
+                        name: "Economy"
+                    }
+                ];
+                $scope.article.quotes = [
+                    {
+                        text: "this is a quote",
+                        source_url: window.location.href,
+                        source_id: article.id,
+                        person_name: "Angela Merkel",
+                        person_handle: "angela-merkel"
+                    }
+                ];
             });
 
+        var newQuote = function(text, personName, personHandle) {
+            return {
+                text: text,
+                source_url: window.location.href,
+                source_id: $scope.article.id,
+                person_name: personName,
+                person_handle: personHandle
+            }
+        }
+
+        var isSelected = function(x) {
+            return x.isSelected === true
+        }
 
         $scope.saveArticle = function() {
             $scope.article.$update()
+            $scope.article.tags = $scope.article.tags.filter(isSelected)
+            $scope.article.persons = $scope.article.persons.filter(isSelected)
+            $timeout(toggleSidebar, 800);
         }
 
+        $scope.togglePerson = function(person) {
+            if (person.isSelected) { 
+                person.isSelected = false;
+            } else { 
+                person.isSelected = true;
+            }
+        }
+
+        $scope.toggleTopic = function(person) {
+            if (person.isSelected) { 
+                person.isSelected = false;
+            } else { 
+                person.isSelected = true;
+            }
+        }
+
+        document.addQuote = function(quote) {
+            console.log('pushing qote', quote)
+            $scope.article.quotes.push(newQuote(quote, 'Angela Merkel', 'angela-merkel'));
+            $scope.$apply();
+        }
 
         // <link rel="canonical" href="http://www.spiegel.de/politik/deutschland/dobrindt-zu-pkw-maut-zugestaendnisse-geplant-a-997878.html">
         // <meta name="keywords" content="Bundesländer, Autobahnen, Widerstand, Maut, Länder, Abgabe, Politik, Deutschland, Pkw-Maut, Alexander Dobrindt, Nordrhein-Westfalen, CDU">

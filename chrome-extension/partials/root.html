@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
 <div class="xxx-app">
     <div class="xxx-app-content animated">
         <div ng-controller="RootCtrl" ng-cloack>
@@ -20,32 +22,36 @@
                     <span class="star" ng-class="{'star-selected': article.rating >= 4}" ng-click="article.rating = 4;"></span>
                     <span class="star" ng-class="{'star-selected': article.rating >= 5}" ng-click="article.rating = 5;"></span>
                 </div>
+                <div>
+                    <button class="btn btn-danger btn-sm">Crap</button>
+                </div>
 
                 <div class="info-block">
                     <h2>People</h2>
-                    <ul>
-                        <li ng-repeat="person in article.meta.people">
-                            <img src="{{ person.img_url }}" height="80"/>
+                        <div ng-repeat="person in article.meta.people" ng-click="togglePerson(person)">
+                            <img class="img-circle" 
+                                 src="{{ person.img_url }}" height="80"/>
                             <span class="name">{{ person.name }}</span>
-                            <span class="position">{{ person.position }}</span>
-                        </li>
-                    </ul>
+                            <span style="color: green" ng-show="person.isSelected">&#10003;</span>
+                            <!--<span class="position">{{ person.position }}</span>-->
+                        </div>
                 </div>
                 <div class="info-block">
                     <h2>Quotes</h2>
-                    <ul>
-                        <li ng-repeat="quote in article.quotes">{{ quote }}</li>
-                    </ul>
+                        <div ng-repeat="quote in article.quotes">
+                            {{ quote.text }} by <em>{{ quote.person_name }}</em>
+                        </div>
                 </div>
+                
                 <div class="info-block">
                     <h2>Topics</h2>
-                    <ul>
-                        <li ng-repeat="topic in article.meta.topics">{{ topic }}</li>
-                    </ul>
+                        <div ng-repeat="topic in article.meta.topics">
+                            <span ng-click="toggleTopic(topic)">{{ topic.handle }}</span>
+                            <span style="color: green" ng-show="topic.isSelected">&#10003;</span>
+                        </div>
                 </div>
-                <div>
-                    <span ng-click="saveArticle();">Crapy article!</span>
-                </div>
+
+                <button class="btn btn-success btn-sm" ng-click="saveArticle();">Submit</button>
             </div>
         </div>        
         <div class="xxx-app-footer">
