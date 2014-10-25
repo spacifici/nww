@@ -66,6 +66,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     }
 
     if (message.action === 'addQuote') {
+        alert(message.selectionText)
         console.log(message.selectionText)
     }
 });

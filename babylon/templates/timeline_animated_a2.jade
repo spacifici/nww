@@ -1,24 +1,36 @@
 mixin tl_article(e)
-    .timeline-entry(class=tl_entry_classes(e))
-        .col-lg-12 
-            .extra 
-            .badge
-            .content ARTICLE {{ e }}
+    .timeline-block.article-block(class=tl_entry_classes(e))
+        .timeline-img.picture
+        .timeline-content
+            .article
+                img(src=e.og.image)
+                .title.floated= e.og.title
+                .release-date.floated= e.date_str
+                .description.floated= e.og.description
+
 
 mixin tl_quote(e)
-    .row-entry.quote(class=tl_entry_classes(e))
-        .col-lg-12
-            .extra 
-            .badge
-            .content QUOTE {{ e }}
+    .timeline-block.quote-block(class=tl_entry_classes(e))
+        .timeline-img.picture
+        .timeline-content
+            .quote(style="background-image: url('{{ e.img_url }}') ")
+                div.text= e.text
+                div.reference
+                    div
+                        span.position - {{ e.person.position }}, 
+                        span.name {{ e.person.name }}
+                    div= e.source
 
-mixin tl_infographic(e)
-    .row-entry.quote(class=tl_entry_classes(e))
-        .col-lg-12 INFOGRAPHIC {{ e }}
 
 mixin tl_gallery(e)
-    .row-entry.quote(class=tl_entry_classes(e))
-        .col-lg-12 GALLERY {{ e }}
+    .timeline-block.gallery-block(class=tl_entry_classes(e))
+        .timeline-img.picture
+        .timeline-content
+            .images
+                for url in e.images[:3]
+                    img.gallery-image(src=url)
+                    span(style="display: inline-block; width: 5px;")
+
 
 doctype html5
 html(lang="en")
@@ -29,40 +41,251 @@ html(lang="en")
 
         link(href="/static/timeline/css/reset.css", rel="stylesheet")
         link(href="/static/timeline/css/timeline.css", rel="stylesheet")
-        script(src="/static/timeline/css/modernizr.css")
-        script(src="/static/timeline/css/jquery.css")
 
         style
-            .xxx {
-                visibility: hidden;
+            body {
+                background-color: #fafafa;
             }
 
+            .quote {
+                background-repeat: no-repeat;
+                background-origin: content-box;
+                background-size: contain;
+            }
+
+            .timeline-content {
+                padding: 0px;
+            }
+
+            .timeline-img {
+                width: 12px;
+                height: 12px;
+                left: 50%;
+                margin-left: -6px;
+                margin-top: 24px;
+                background-color: #ff9999; 
+            }
+
+            .timeline-content {
+                width: 48%;
+            }
+
+
+
+
+
+            .quote img { border-radius: 5px; }
+            .quote .text { 
+                color: white;
+                padding: .6em;
+                min-height: 120px;
+                margin-left: 40%; 
+                background-color: #adbcc3;
+            }
+            .quote .reference { 
+                color: white;
+                padding: .6em;
+                text-align: right;
+                margin-left: 40%; 
+                background-color: #859ca7;
+            }
+
+            .quote .reference .name {
+                font-weight: bold;
+            }
+
+            .timeline-block:nth-child(even) .text {
+                margin-left: 0%; 
+                margin-right: 40%; 
+            }
+
+            .timeline-block:nth-child(even) .reference {
+                margin-left: 0%; 
+                margin-right: 40%; 
+            }
+
+            .timeline-block:nth-child(even) .quote {
+                background-position-x: 140%;
+            }
+
+            .timeline-img.picture {
+                background: #d7e4ed;
+            }
+
+            .quote-block.timeline-block:nth-child(odd) .timeline-content {
+                padding-left: 5%;
+                background-color: #fafafa;
+            }
+
+            .quote-block.timeline-block:nth-child(even) .timeline-content {
+                padding-right: 5%;
+                background-color: #fafafa;
+            }
+
+
+
+            .article {
+                min-height: 140px;
+                padding: .6em;
+            }
+
+            .article .title {
+                font-weight: bold;
+            }
+
+            .article .description {
+                padding-top: .8em;
+            }
+
+            .article .release-date {
+                color: red;
+                padding-top: .8em;
+            }
+
+            .article img {
+                height: 100px;
+                float: right;
+            }
+
+            .article .floated {
+                margin-right: 110px;
+            }
+
+            .article-block:nth-child(even) .article img {
+                height: 100px;
+                float: left;
+            }
+
+            .article-block:nth-child(even) .floated {
+                margin-right: inherit;
+                margin-left: 110px;
+            }
+
+             
+
+            .quote-block:nth-child(odd) .timeline-content::before {
+                border-left-color: #adbcc3;
+            }
+
+            .quote-block:nth-child(even) .timeline-content::before {
+                border-right-color: #adbcc3;   
+            }
+
+            .timeline::before {
+                background: #ff9999;
+            }
+
+            .timeline-img.picture {
+                background-color: #ff9999; 
+            }
+
+
+
+
+
+            .gallery-image {
+                height: 90px;
+            }
+
+            .large-images .gallery-image {
+                height: 130px;
+            }
+
+            .huge-images .gallery-image {
+                height: inherit;
+                max-height: inherit;
+            }
+
+            .gallery-image img:last-child {
+                border-top-left-radius: 5px;
+            }
+
+            .gallery-image img:first-child {
+                border-radius: 5px;
+            }
+
+            .gallery-block .images {
+                background-color: white;
+                padding: .6em;
+            }
+
+            .gallery-block:nth-child(odd) .timeline-content .images {
+                float: right;
+            }
+
+            .gallery-block:nth-child(even) .timeline-content .images {
+                float: left;
+            }
+
+            .timeline-block {
+                margin-bottom: 1.2em;
+            }
+
+            .gallery-block .timeline-content {
+                background-color: #fafafa;                
+            }
+
+
+
+
+            //- .scale-2 .rating-1 {
+            //-     display: none;
+            //- }
+
+            //- .scale-3 .rating-1,
+            //- .scale-3 .rating-2 {
+            //-     display: none;
+            //- }
+
+            //- .scale-4 .rating-1,
+            //- .scale-4 .rating-2,
+            //- .scale-4 .rating-3 {
+            //-     display: none;
+            //- }
+
+            //- .scale-5 .rating-1,
+            //- .scale-5 .rating-2,
+            //- .scale-5 .rating-3,
+            //- .scale-5 .rating-4 {
+            //-     display: none;
+            //- }
+
+
+
+        script(src="/static/jquery.js")
         script
             $(document).ready(function() {
+                $('.scale-update').click(function() {
+                    //- var classes = $(this).attr('class').split(/\s+/),
+                    //-     scale = '';
 
-            })
-                
+                    //- $.each(classes, function(index, item) {
+                    //-     if (item.indexOf('rating-') == 0) {
+                    //-         scale = item.split('-')[1];
+                    //-     }
+                    //- });
+
+                    //- $('.timeline').removeClass('scale-1 scale-2 scale-3 scale-4 scale-5');
+                    //- $('.timeline').addClass('scale-' + scale);
+
+                    $('.rating-1 .rating-2').remove()
+                }); 
+            });
+
     body
+        div(style="text-align: center; cursor: pointer;")
+            a.scale-update.rating-1 [1]
+            a.scale-update.rating-2 [2]
+            a.scale-update.rating-3 [3]
+            a.scale-update.rating-4 [4]
+            a.scale-update.rating-5 [5]
+
         section.timeline.container
             for entry in entries
-                .timeline-block(class=tl_entry_classes(entry))
-                    .timeline-img.picture
-                        img(src='/static/timeline/img/icon-picture.svg')
-                    .timeline-content
-                        h2  Title of section 1 {{ entry.scale }}
-                        p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto, optio, dolorum provident rerum aut hic quasi placeat iure tempora laudantium ipsa ad debitis unde? Iste voluptatibus minus veritatis qui ut.
-                        a.read-more Read more
-                        span.date Jan 14
-
-                //- if entry.type == 'article'
-                //-     +tl_article(entry)
-                //- if entry.type == 'quote'
-                //-     +tl_quote(entry)
-                //- if entry.type == 'infographic'
-                //-     +tl_infographic(entry)
-                //- if entry.type == 'gallery'
-                //-     +tl_gallery(entry)
-
-
-                        
+                if entry.type == 'quote'
+                    +tl_quote(entry)
+                if entry.type == 'article'
+                    +tl_article(entry)
+                if entry.type == 'gallery'
+                    +tl_gallery(entry)                       
 
