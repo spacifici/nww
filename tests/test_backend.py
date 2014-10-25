@@ -1,9 +1,49 @@
 from babylon import backends
+from babylon import qs
+from babylon import topics
 
 
-def test_user_type():
-    assert 1 == 2
+def test_article_get_or_create():
+    url = 'fun'
+    a = backends.get_article(url)
+    assert a['title'] == ''
+    assert a['source_url'] == url
 
+def test_quote():
+    # insert quote
+    backends.store_quote('hi', '110', 'http://cliqz.com/', '123', 'Thomas', 'T')
+    # retrieve quote
+    for q in backends.get_quote(person_id='T'):
+        assert q['type'] == "quote"
+
+
+def test_topics():
+    backends.store_topic('title', '', {'a': 'b'})
+    for t in backends.get_topic(title='title'):
+        assert t['entity_type'] == 'topic'
+
+
+def test_store_article():
+    url = 'fun'
+    assert backends.articles.find({'url': url}).count() == 0
+    a = backends.get_article(url)
+    backends.store_article(a)
+    a = backends.get_article(url)
+    assert a['source_url'] == 'fun'
+
+def test_person_get_or_create():
+    handle = 'h'
+    assert backends.persons.find({'handle': handle}).count() == 0
+    p = backends.get_person(handle)
+    assert p['handle'] == handle
+    assert 'meta' in p
+
+def test_link():
+    a = backends.get_article('a')
+    t = backends.get_tag('t')
+    backends.link(backends.articles, a['id'], 'tags', t['id'])
+    a = backends.get_article('a')
+    assert a['tags'] == [t['id']]
 
 def setup_module(module):
     backends.redis_conn.flushall()
