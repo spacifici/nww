@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import logging
+import sys
+
 from flask import Flask, render_template, url_for, jsonify, request
 from babylon import backends
 from glob import glob
@@ -7,6 +10,18 @@ from os import path
 
 app = Flask(__name__)
 app.jinja_env.add_extension('pyjade.ext.jinja.PyJadeExtension')
+
+# Configure logging.
+app.logger.setLevel(logging.DEBUG)
+del app.logger.handlers[:]
+
+handler = logging.StreamHandler(stream=sys.stdout)
+handler.setLevel(logging.DEBUG)
+handler.formatter = logging.Formatter(
+    fmt=u"%(asctime)s level=%(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%SZ",
+)
+app.logger.addHandler(handler)
 
 
 @app.context_processor
@@ -148,62 +163,8 @@ def timeline():
 @app.route('/api/article', methods=['GET'])
 def article_by_id():
     url = request.args.get('uri', 'NON')
-    # article = backends.get_article(url)
-
-    article = {
-        "id": "dummy-id",
-        "type": "",
-        "title": "",
-        "description": "",
-        "time": "",
-        "source_url": "",
-        "og": {
-            "title": "",
-            "type": "", 
-            "url": "",
-            "image": "",
-            "site_name": "",
-            "description": "",
-        },
-        "quotes": [],
-        "people": [],
-        "topics": [],
-        "tags": [],
-        "meta": {
-            "people": [
-                {
-                    "name": "Vladimir Putin",
-                    "handle": "vladimir-putin",
-                    "position": "President of Russian Federation"
-                },
-                {
-                    "name": "Angela Merkel",
-                    "handle": "angela-merkel",
-                    "position": "Chancellor of the Federal Republic of Germany"
-                }
-            ],
-            "topics": [
-                {
-                    "name": "MH 17 Crash",
-                    "handle": "mh-17-crash"
-                }
-            ],
-            "tags": [
-                {
-                    "name": "Global Energy",
-                    "handle": "global-energy"
-                },
-                {
-                    "name": "Economy",
-                    "handle": "economy"
-                }
-            ]
-        }
-    }
-
+    article = backends.get_article(url)
     ensure_image_urls(article)
-
-
     return jsonify(article)
 
 
@@ -215,7 +176,8 @@ def article():
 @app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
 def update_article(article_id):
     article = request.get_json()
-    return jsonify(article)
+    backends.store_article(article)
+    return jsonify({"success": True})
 
 
 @app.route('/img/<entity>/<handle>/<category>')
