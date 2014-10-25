@@ -1,27 +1,61 @@
 .xxx-app {
     position: fixed;
     height: 100%;
-    width: 380px;
+    width: 420px;
     top: 0px;
     right: -40px;
-    z-index: 999;
+    z-index: 99999;
     display: none;
+    font-family: Georgia, serif;
+    font-size: 18px;
 }
 
 .xxx-app .xxx-app-content {
     position: fixed;
+    border: 1px solid red;
     background: rgba(76, 76, 94, 0.972549);
     box-shadow: rgba(0, 0, 0, 0.498039) -2px 0px 10px;
     height: 100%;
+    width: 378px;
     opacity: 0.98;
     animation-duration: 1s;
-    padding-right: 40px;
+    /*padding-right: 40px;*/
 }
 
 .xxx-app .xxx-app-content .xxx-app-footer {
     position: absolute;
     bottom: 0px;
-    width: 340px;
+    width: 380px;
     background-color: gray;
 }
+
+.xxx-app .xxx-app-content .info-block h2 {
+    background-color: gray;
+}
+
+.xxx-app .xxx-app-content .loading-data {
+    margin-top: 200px;
+    color: white;
+    text-align: center;
+}
+
+.xxx-app .xxx-app-content .hide-me {
+    display: none;
+}
+
+.xxx-app .xxx-app-content .star {
+    background: url('chrome-extension://__MSG_@@extension_id__/img/star-grey-md.png');
+    height: 20px;
+    width: 20px;
+    display:inline-block;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
+.xxx-app .xxx-app-content .star-selected {
+    background: url('chrome-extension://__MSG_@@extension_id__/img/star-md.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
 

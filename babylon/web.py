@@ -121,8 +121,9 @@ def article():
 
 
 @app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
-def update_article():
+def update_article(article_id):
     print 'update_article'
+    print request.get_json()
     return jsonify({'id': 'OK'})
 
 
@@ -152,14 +153,14 @@ def ensure_image_urls(article):
     meta = article['meta']
 
     for person in meta.get('people', []):
-        person['url'] = url_for('.image',
+        person['img_url'] = url_for('.image',
             entity='person',
             handle=person['handle'],
             category='icon',
             _external=True)
 
     for topic in meta.get('topics', []):
-        topic['url'] = url_for('.image',
+        topic['img_url'] = url_for('.image',
             entity='topic',
             handle=topic['handle'],
             category='icon',

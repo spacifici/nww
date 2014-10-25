@@ -6,12 +6,12 @@ app.controller('RootCtrl', ['$scope', '$resource',
     function($scope, $resource) {
 
         var Article = $resource(
-            'http://localhost:5000/api/article/:id',
+            'http://localhost:5050/api/article/:id',
             {
                 'id': '@id'
             },
             {
-                'getByUrl': { url: 'http://localhost:5000/api/article', method: 'GET' },
+                'getByUrl': { url: 'http://localhost:5050/api/article', method: 'GET' },
                 'get': { method: 'GET' },
                 'update': { method:'POST' }
             }
@@ -19,18 +19,20 @@ app.controller('RootCtrl', ['$scope', '$resource',
 
         $scope.article = Article.getByUrl({uri: window.location.href})
 
+        $scope.isLoading = true;
+
         Article.getByUrl({uri: window.location.href})
             .$promise.then(function(article) {
-                console.log('HERE')
-                console.log(article)
+                $scope.facebookMeta = getMeta('og:', 'property');
                 $scope.article = article;
+                $scope.article.rating = 3;
+                $scope.article.og = $scope.facebookMeta; 
+                $scope.isLoading = false;
             });
 
-        $scope.facebookMeta = getMeta('og:', 'property')
 
         $scope.saveArticle = function() {
-            console.log('save')
-            $scope.article.save()
+            $scope.article.$update()
         }
 
 

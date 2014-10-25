@@ -1,19 +1,53 @@
 <div class="xxx-app">
     <div class="xxx-app-content animated">
         <div ng-controller="RootCtrl" ng-cloack>
-            <p>HELLO WORLD</p>
+            <!-- <p>HELLO WORLD</p>
             <p>{{ facebookMeta }}</p>
             <p>{{ twitterMeta }}</p>
-            <p>article: {{ article }}</p>
-            <div>
-                <span ng-click="markAsCrap();">Crapy article!</span>
+            <p>article: {{ article }}</p> -->
+
+            <div ng-show="isLoading" class="loading-data">
+                <h1>
+                    LOADING...
+                </h1>
             </div>
-        </div>
-        <div>
-            h3 Quotes
-            Putin: "Blah Blah Blah"
-        </div>
-        
+
+            <div ng-class="{'hide-me': isLoading}">
+                <div>
+                    <span class="star" ng-class="{'star-selected': article.rating >= 1}" ng-click="article.rating = 1;"></span>
+                    <span class="star" ng-class="{'star-selected': article.rating >= 2}" ng-click="article.rating = 2;"></span>
+                    <span class="star" ng-class="{'star-selected': article.rating >= 3}" ng-click="article.rating = 3;"></span>
+                    <span class="star" ng-class="{'star-selected': article.rating >= 4}" ng-click="article.rating = 4;"></span>
+                    <span class="star" ng-class="{'star-selected': article.rating >= 5}" ng-click="article.rating = 5;"></span>
+                </div>
+
+                <div class="info-block">
+                    <h2>People</h2>
+                    <ul>
+                        <li ng-repeat="person in article.meta.people">
+                            <img src="{{ person.img_url }}" height="80"/>
+                            <span class="name">{{ person.name }}</span>
+                            <span class="position">{{ person.position }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="info-block">
+                    <h2>Quotes</h2>
+                    <ul>
+                        <li ng-repeat="quote in article.quotes">{{ quote }}</li>
+                    </ul>
+                </div>
+                <div class="info-block">
+                    <h2>Topics</h2>
+                    <ul>
+                        <li ng-repeat="topic in article.meta.topics">{{ topic }}</li>
+                    </ul>
+                </div>
+                <div>
+                    <span ng-click="saveArticle();">Crapy article!</span>
+                </div>
+            </div>
+        </div>        
         <div class="xxx-app-footer">
             XXXXX
         </div>
