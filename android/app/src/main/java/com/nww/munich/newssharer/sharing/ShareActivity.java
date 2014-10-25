@@ -14,18 +14,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nww.munich.newssharer.Constants;
 import com.nww.munich.newssharer.R;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 
 public class ShareActivity extends Activity {
@@ -34,6 +37,8 @@ public class ShareActivity extends Activity {
     String articleTitle;
     String articleQuote;
     JSONObject jsonArticle;
+    ArrayList<Integer> topicIndexes;
+    ArrayList<Integer> personIndexes;
 
     private ProgressDialog progressDialog;
 
@@ -184,19 +189,40 @@ public class ShareActivity extends Activity {
         progressDialog = null;
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
+    void submitData() {
 
-        public PlaceholderFragment() {
-        }
+        try {
+            JSONArray origTopics = jsonArticle.getJSONObject("meta").getJSONArray("topics");
+            JSONArray topics = jsonArticle.getJSONArray("topics");
+            JSONArray people = jsonArticle.getJSONArray("people");
+            JSONArray quotes = jsonArticle.getJSONArray("quotes");
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+            jsonArticle.put("title", articleTitle);
+            quotes.put(articleQuote);
+            jsonArticle.put("source_url", articleURL);
+
+            // Topics
+            for (Integer ix: topicIndexes) {
+                topics.put(origTopics.get(ix));
+            }
+
+            // People
+            for (Integer ix: personIndexes) {
+                Object[] record = Constants.PERSONS[ix];
+
+                JSONObject p = new JSONObject();
+                p.put("handle", record[3])
+                        .put("img_url", record[4])
+                        .put("name", record[1])
+                        .put("position", getString((Integer) record[1]));
+                people.put(p);
+            }
+
+            Log.i("FIN", jsonArticle.toString(2));
+        } catch (JSONException ex) {
+            showErrorDialog(R.string.error_parsing_backend_response, true);
         }
     }
+
+
 }

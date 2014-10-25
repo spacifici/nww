@@ -5,9 +5,11 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,9 +17,9 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nww.munich.newssharer.Constants;
 import com.nww.munich.newssharer.R;
 import com.nww.munich.newssharer.views.PersonView;
-import com.squareup.okhttp.Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,12 +38,19 @@ public class MainFragment extends Fragment implements OnClickListener {
     private TextView titleTextView;
     private LinearLayout peopleLinearLayout;
     private TextView quoteTextView;
-    private LinearLayout tagsLinearLayout;
+    // private LinearLayout tagsLinearLayout;
     private LinearLayout topicsLineraLayout;
     private Button addQuoteButton;
     private Button changeQuoteButton;
     private ArrayList<PersonView> personViews;
     private ArrayList<CheckBox> topicsCheckBoxes;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,7 +59,7 @@ public class MainFragment extends Fragment implements OnClickListener {
         titleTextView = (TextView) view.findViewById(R.id.titleTextView);
         peopleLinearLayout = (LinearLayout) view.findViewById(R.id.peopleLinearLayout);
         quoteTextView = (TextView) view.findViewById(R.id.quoteTextView);
-        tagsLinearLayout = (LinearLayout) view.findViewById(R.id.tagsLinearLayout);
+        // tagsLinearLayout = (LinearLayout) view.findViewById(R.id.tagsLinearLayout);
         topicsLineraLayout = (LinearLayout) view.findViewById(R.id.topicsLinearLayout);
 
         quoteTextView.setText(((ShareActivity) getActivity()).articleQuote);
@@ -59,7 +68,7 @@ public class MainFragment extends Fragment implements OnClickListener {
         changeQuoteButton = (Button) view.findViewById(R.id.changeQuoteButton);
         changeQuoteButton.setOnClickListener(this);
 
-        view.findViewById(R.id.addTagButton).setOnClickListener(this);
+        // view.findViewById(R.id.addTagButton).setOnClickListener(this);
 
         ShareActivity activity = (ShareActivity) getActivity();
         titleTextView.setText(activity.articleTitle);
@@ -68,6 +77,54 @@ public class MainFragment extends Fragment implements OnClickListener {
         setupTopics();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actions, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.submit_item:
+                handleSubmit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void handleSubmit() {
+        // check if we fulfill the form
+        boolean topics = false;
+        boolean people = false;
+        ArrayList<Integer> topicIndexes = new ArrayList<Integer>();
+        ArrayList<Integer> personIndexes = new ArrayList<Integer>();
+
+        for (int ix = 0; ix < personViews.size(); ix++) {
+            boolean checked = personViews.get(ix).isChecked();
+            people |= checked;
+            if (checked)
+                personIndexes.add(ix);
+        }
+
+        for (int ix = 0; ix < topicsCheckBoxes.size(); ix++) {
+            boolean checked = topicsCheckBoxes.get(ix).isChecked();
+            topics |= checked;
+            if (checked)
+                topicIndexes.add(ix);
+        }
+
+        if (topics && people) {
+            ShareActivity activity = (ShareActivity) getActivity();
+            activity.topicIndexes = topicIndexes;
+            activity.personIndexes = personIndexes;
+            activity.submitData();
+        } else {
+            ((ShareActivity) getActivity())
+                    .showErrorDialog(R.string.need_a_topic_and_a_person, false);
+        }
     }
 
     private void setupTopics() {
@@ -95,26 +152,21 @@ public class MainFragment extends Fragment implements OnClickListener {
     }
 
     private void addPersons() {
-        Resources res = getResources();
-        Object[][] persons = {
-                {"Angela Merkel", getString(R.string.chancellor_of_germany), BitmapFactory.decodeResource(res, R.drawable.merkel)},
-                {"Barack Obama", getString(R.string.president_of_united_states), BitmapFactory.decodeResource(res, R.drawable.obama)},
-                {"Vladimir Putin", getString(R.string.president_of_russia), BitmapFactory.decodeResource(res, R.drawable.vladimir)},
-                {"François Hollande", getString(R.string.president_of_france), BitmapFactory.decodeResource(res, R.drawable.francois)}
-        };
-        personViews = new ArrayList<PersonView>(persons.length);
+        personViews = new ArrayList<PersonView>(Constants.PERSONS.length);
 
-        for (Object[] record: persons)
+        for (Object[] record: Constants.PERSONS)
             addPeopleView(record);
     }
 
     private void addPeopleView(Object[] record) {
+        Resources res = getResources();
         LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
         PersonView view = new PersonView(getActivity());
         view.setName((String) record[0]);
-        view.setPosition((String) record[1]);
-        view.setProfileBitmap((Bitmap) record[2]);
+        view.setPosition(res.getString((Integer) record[1]));
+        Bitmap bm = BitmapFactory.decodeResource(res, ((Integer) record[2]));
+        view.setProfileBitmap(bm);
 
         peopleLinearLayout.addView(view, layoutParams);
         personViews.add(view);
@@ -123,24 +175,24 @@ public class MainFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.addPeopleButton:
-                handleAddPeople();
-                break;
+//            case R.id.addPeopleButton:
+//                handleAddPeople();
+//                break;
             case R.id.addQuoteButton:
             case R.id.changeQuoteButton:
                 handelAddQuote();
                 break;
-            case R.id.addTagButton:
-                handleAddTag();
-                break;
+//            case R.id.addTagButton:
+//                handleAddTag();
+//                break;
             default:
                 break;
         }
     }
 
-    private void handleAddTag() {
-        throw new RuntimeException("Not yet implemented");
-    }
+    // private void handleAddTag() {
+    //     throw new RuntimeException("Not yet implemented");
+    // }
 
     private void handelAddQuote() {
         Fragment textSelectionFragment = new TextSelectionFragment();
@@ -151,10 +203,6 @@ public class MainFragment extends Fragment implements OnClickListener {
                 .add(R.id.container, textSelectionFragment)
                 .addToBackStack("text-selection-fragment")
                 .commit();
-    }
-
-    private void handleAddPeople() {
-        throw new RuntimeException("Not yet implemented");
     }
 
     public void setQuote(String quote) {
