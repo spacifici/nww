@@ -37,6 +37,7 @@
     opacity: 0.6;
     color: white;
     text-align: center;
+    display: none;
 }
 
 .xxx-app .xxx-app-content .loading-data {
@@ -58,12 +59,19 @@
     display:inline-block;
     background-size: 20px 20px;
     background-repeat: no-repeat;
+    opacity: 0.8;
 }
 
 .xxx-app .xxx-app-content .star-selected {
     background: url('chrome-extension://__MSG_@@extension_id__/img/star-md.png');
     background-size: 20px 20px;
     background-repeat: no-repeat;
+    opacity: 0.7;
+}
+
+.xxx-app .topic,
+.xxx-app .quote {
+    opacity: 0.8;
 }
 
 .xxx-app .topic,

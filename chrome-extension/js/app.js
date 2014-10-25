@@ -28,7 +28,6 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
         function loadArticle(article) {
             $scope.facebookMeta = getMeta('og:', 'property');
             $scope.article = article;
-            $scope.article.rating = 0;
             $scope.article.og = $scope.facebookMeta; 
             $scope.isLoading = false;
 
