@@ -1,20 +1,15 @@
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
 <div class="xxx-app">
     <div class="xxx-app-content animated">
         <div ng-controller="RootCtrl" ng-cloack>
-            <!-- <p>HELLO WORLD</p>
-            <p>{{ facebookMeta }}</p>
-            <p>{{ twitterMeta }}</p>
-            <p>article: {{ article }}</p> -->
 
             <div ng-show="isLoading" class="loading-data">
-                <h1>
+                <div>
                     LOADING...
-                </h1>
+                </div>
             </div>
 
-            <div ng-class="{'hide-me': isLoading}">
+            <div class="xxx-app-scrollable-content hide-me" 
+                ng-class="{'hide-me': isLoading}">
                 <div>
                     <span class="star" ng-class="{'star-selected': article.rating >= 1}" ng-click="article.rating = 1;"></span>
                     <span class="star" ng-class="{'star-selected': article.rating >= 2}" ng-click="article.rating = 2;"></span>
@@ -22,40 +17,65 @@
                     <span class="star" ng-class="{'star-selected': article.rating >= 4}" ng-click="article.rating = 4;"></span>
                     <span class="star" ng-class="{'star-selected': article.rating >= 5}" ng-click="article.rating = 5;"></span>
                 </div>
-                <div>
+                <!-- <div>
                     <button class="btn btn-danger btn-sm">Crap</button>
+                </div> -->
+
+                <div class="info-block">
+                    <h3>People</h3>
+                    <div class="person"
+                         ng-repeat="person in article.meta.people">
+                        <input type="checkbox" 
+                            class="selection" 
+                            ng-model="person.isSelected"
+                            ng-change="saveArticle();"/>
+                        <img class="img-circle" 
+                            src="{{ person.img_url }}" height="80"></img>
+                        <span class="name padded">{{ person.name }}</span>
+                        <span class="position padded">{{ person.position }}</span>
+                        <div class="clear"></div>
+                    </div>
                 </div>
 
                 <div class="info-block">
-                    <h2>People</h2>
-                        <div ng-repeat="person in article.meta.people" ng-click="togglePerson(person)">
-                            <img class="img-circle" 
-                                 src="{{ person.img_url }}" height="80"/>
-                            <span class="name">{{ person.name }}</span>
-                            <span style="color: green" ng-show="person.isSelected">&#10003;</span>
-                            <!--<span class="position">{{ person.position }}</span>-->
+                    <h3>Quotes</h3>
+                    <div class="quote" 
+                        ng-repeat="quote in article.quotes">
+                        <span class="quote-markers">&ldquo;</span>
+                        {{ quote.text }} 
+                        <span class="quote-markers">&rdquo;</span>
+                        <div class="author">
+                            <bold>{{ quote.person_name }}</bold>
                         </div>
-                </div>
-                <div class="info-block">
-                    <h2>Quotes</h2>
-                        <div ng-repeat="quote in article.quotes">
-                            {{ quote.text }} by <em>{{ quote.person_name }}</em>
-                        </div>
+                    </div>
                 </div>
                 
                 <div class="info-block">
-                    <h2>Topics</h2>
-                        <div ng-repeat="topic in article.meta.topics">
-                            <span ng-click="toggleTopic(topic)">{{ topic.handle }}</span>
-                            <span style="color: green" ng-show="topic.isSelected">&#10003;</span>
-                        </div>
+                    <h3>Topics</h3>
+                    <div class="topic" 
+                        ng-repeat="topic in article.meta.topics">
+                        <input type="checkbox" 
+                            ng-model="topic.isSelected"
+                            ng-change="saveArticle()"/>
+                        <span>{{ topic.name }}</span>
+                    </div>
                 </div>
 
-                <button class="btn btn-success btn-sm" ng-click="saveArticle();">Submit</button>
+                <div class="info-block">
+                    <h3>Tags</h3>
+                    <div class="topic" 
+                        ng-repeat="tag in article.meta.tags">
+                        <input type="checkbox" 
+                            ng-model="tag.isSelected"
+                            ng-change="saveArticle()"/>
+                        <span>{{ tag.name }}</span>
+                    </div>
+                </div>
+
             </div>
         </div>        
         <div class="xxx-app-footer">
-            XXXXX
+            Project Babylon
         </div>
     </div>
 </div>

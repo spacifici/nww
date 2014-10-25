@@ -14,7 +14,9 @@ mixin tl_quote(e)
         .timeline-img.picture
         .timeline-content
             .quote(style="background-image: url('{{ e.img_url }}') ")
-                div.text= e.text
+                div.text 
+                    span.huge &ldquo; 
+                    | {{ e.text }}
                 div.reference
                     div
                         span.position - {{ e.person.position }}, 
@@ -249,6 +251,12 @@ html(lang="en")
             //- .scale-5 .rating-4 {
             //-     display: none;
             //- }
+
+
+            .text .huge {
+                font-weight: bold;
+                font-size: 2em;
+            }
 
 
 

@@ -88,6 +88,9 @@ def get_article(url):
 
 def store_article(article):
     articles.save(with_mongo_id(article))
+    article['id'] = unicode(article['_id'])
+    del article['_id']
+    return article
 
 
 def get_person(handle):

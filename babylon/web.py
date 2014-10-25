@@ -176,8 +176,10 @@ def article():
 @app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
 def update_article(article_id):
     article = request.get_json()
-    backends.store_article(article)
-    return jsonify({"success": True})
+    article = backends.store_article(article)
+    import json
+    print json.dumps(article, indent=4)
+    return jsonify(article)
 
 
 @app.route('/img/<entity>/<handle>/<category>')
@@ -191,7 +193,6 @@ def image(entity, handle, category=None):
     abs_img_file = path.join(
         path.abspath(app.static_folder), img_file
     )
-
 
     matching_files = glob(abs_img_file + '*')
     print abs_img_file, matching_files

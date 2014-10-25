@@ -4,7 +4,7 @@ var app = angular.module('xxxApp', ['ngRoute', 'ngResource'])
 
 app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
     function($scope, $resource, $timeout) {
-
+ 
         var Article = $resource(
             'http://localhost:5050/api/article/:id',
             {
@@ -12,8 +12,8 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             },
             {
                 'getByUrl': { url: 'http://localhost:5050/api/article', method: 'GET' },
-                'get': { method: 'GET' },
-                'update': { method:'POST' }
+                // 'get': { method: 'GET' },
+                // 'update': { method:'POST' }
             }
         );
 
@@ -21,46 +21,67 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
 
         $scope.isLoading = true;
 
+        function getHandle(entity) {
+            return entity.handle;
+        }
+
+        function loadArticle(article) {
+            $scope.facebookMeta = getMeta('og:', 'property');
+            $scope.article = article;
+            $scope.article.rating = 0;
+            $scope.article.og = $scope.facebookMeta; 
+            $scope.isLoading = false;
+
+            var selectedPeopleHandles = $scope.article.people.map(getHandle);
+            var selectedTopics = $scope.article.topics.map(getHandle);
+            var selectedTags = $scope.article.tags.map(getHandle);
+
+            $scope.article.meta.people.forEach(function(entity) {
+                entity.isSelected = selectedPeopleHandles.indexOf(entity.handle) > -1;
+            });
+
+            $scope.article.meta.topics.forEach(function(entity) {
+                entity.isSelected = selectedTopics.indexOf(entity.handle) > -1;
+            });
+
+            $scope.article.meta.tags.forEach(function(entity) {
+                entity.isSelected = selectedTags.indexOf(entity.handle) > -1;
+            });
+
+            // $scope.article.people = [
+            //     {
+            //         handle: "angela-merkel",
+            //         img_url: "http://sleepy-mountain-8434.herokuapp.com/img/person/angela-merkel/icon",
+            //         name: "Angela Merkel",
+            //         position: "Chancellor of the Federal Republic of Germany"
+            //     }
+            // ];
+            // $scope.article.topics = [
+            //     {
+            //         handle: "mh-17-crash",
+            //         img_url: "http://sleepy-mountain-8434.herokuapp.com/img/topic/mh-17-crash/icon",
+            //         name: "MH 17 Crash"
+            //     }
+            // ];
+            // $scope.article.tags = [
+            //     {
+            //         handle: "economy",
+            //         name: "Economy"
+            //     }
+            // ];
+            // $scope.article.quotes = [
+            //     {
+            //         text: "this is a quote",
+            //         source_url: window.location.href,
+            //         source_id: article.id,
+            //         person_name: "Angela Merkel",
+            //         person_handle: "angela-merkel"
+            //     }
+            // ];
+        }
 
         Article.getByUrl({uri: window.location.href})
-            .$promise.then(function(article) {
-                console.log(article);
-                $scope.facebookMeta = getMeta('og:', 'property');
-                $scope.article = article;
-                $scope.article.rating = 0;
-                $scope.article.og = $scope.facebookMeta; 
-                $scope.isLoading = false;
-                $scope.article.people = [
-                    {
-                        handle: "angela-merkel",
-                        img_url: "http://sleepy-mountain-8434.herokuapp.com/img/person/angela-merkel/icon",
-                        name: "Angela Merkel",
-                        position: "Chancellor of the Federal Republic of Germany"
-                    }
-                ];
-                $scope.article.topics = [
-                    {
-                        handle: "mh-17-crash",
-                        img_url: "http://sleepy-mountain-8434.herokuapp.com/img/topic/mh-17-crash/icon",
-                        name: "MH 17 Crash"
-                    }
-                ];
-                $scope.article.tags = [
-                    {
-                        handle: "economy",
-                        name: "Economy"
-                    }
-                ];
-                $scope.article.quotes = [
-                    {
-                        text: "this is a quote",
-                        source_url: window.location.href,
-                        source_id: article.id,
-                        person_name: "Angela Merkel",
-                        person_handle: "angela-merkel"
-                    }
-                ];
-            });
+            .$promise.then(loadArticle);
 
         var newQuote = function(text, personName, personHandle) {
             return {
@@ -77,26 +98,14 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
         }
 
         $scope.saveArticle = function() {
-            $scope.article.$update()
-            $scope.article.tags = $scope.article.tags.filter(isSelected)
-            $scope.article.persons = $scope.article.persons.filter(isSelected)
-            $timeout(toggleSidebar, 800);
-        }
-
-        $scope.togglePerson = function(person) {
-            if (person.isSelected) { 
-                person.isSelected = false;
-            } else { 
-                person.isSelected = true;
-            }
-        }
-
-        $scope.toggleTopic = function(person) {
-            if (person.isSelected) { 
-                person.isSelected = false;
-            } else { 
-                person.isSelected = true;
-            }
+            $scope.article.people = $scope.article.meta.people.filter(isSelected);
+            $scope.article.topics = $scope.article.meta.topics.filter(isSelected);
+            $scope.article.tags = $scope.article.meta.tags.filter(isSelected);
+            $scope.article.$save(loadArticle);
+            // console.log($scope.article)
+            // $scope.article.tags = $scope.article.tags.filter(isSelected)
+            // $scope.article.persons = $scope.article.persons.filter(isSelected)
+            // $timeout(toggleSidebar, 800);
         }
 
         document.addQuote = function(quote) {
@@ -109,6 +118,9 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
         // <meta name="keywords" content="Bundesländer, Autobahnen, Widerstand, Maut, Länder, Abgabe, Politik, Deutschland, Pkw-Maut, Alexander Dobrindt, Nordrhein-Westfalen, CDU">
         // <meta name="news_keywords" content="Bundesländer, Autobahnen, Widerstand, Maut, Länder, Abgabe, Politik, Deutschland, Pkw-Maut, Alexander Dobrindt, Nordrhein-Westfalen, CDU">
         // $scope.twitterMeta = getMeta('twitter:', 'name')
+
+
+        $('.xxx-app-scrollable-content').removeClass('hide-me');
     }
 ]);
 
