@@ -1,38 +1,47 @@
 'use strict';
 
-var app = angular.module('xxxApp', ['ngRoute'])
+var app = angular.module('xxxApp', ['ngRoute', 'ngResource'])
 
-app.controller('RootCtrl', ['$scope',
-    function($scope) {
+app.controller('RootCtrl', ['$scope', '$resource',
+    function($scope, $resource) {
 
         var Article = $resource(
-            'http://localhost:5000/api/article',
+            'http://localhost:5000/api/article/:id',
             {
-                getId: { method: 'POST' },
-                get: { method: 'GET' },
-                update: { method:'POST' }
+                'id': '@id'
+            },
+            {
+                'getByUrl': { url: 'http://localhost:5000/api/article', method: 'GET' },
+                'get': { method: 'GET' },
+                'update': { method:'POST' }
             }
         );
 
-        alert('HERE')
+        $scope.article = Article.getByUrl({uri: window.location.href})
 
-        $scope.twitterMeta = getMeta('twitter:', 'name')
+        Article.getByUrl({uri: window.location.href})
+            .$promise.then(function(article) {
+                console.log('HERE')
+                console.log(article)
+                $scope.article = article;
+            });
+
         $scope.facebookMeta = getMeta('og:', 'property')
 
-        $scope.data = 'HELLO'
-
-        $scope.markAsCrap = function() {
-            alert('Crapy Article!')
+        $scope.saveArticle = function() {
+            console.log('save')
+            $scope.article.save()
         }
-
-
 
 
         // <link rel="canonical" href="http://www.spiegel.de/politik/deutschland/dobrindt-zu-pkw-maut-zugestaendnisse-geplant-a-997878.html">
         // <meta name="keywords" content="Bundesländer, Autobahnen, Widerstand, Maut, Länder, Abgabe, Politik, Deutschland, Pkw-Maut, Alexander Dobrindt, Nordrhein-Westfalen, CDU">
         // <meta name="news_keywords" content="Bundesländer, Autobahnen, Widerstand, Maut, Länder, Abgabe, Politik, Deutschland, Pkw-Maut, Alexander Dobrindt, Nordrhein-Westfalen, CDU">
+        // $scope.twitterMeta = getMeta('twitter:', 'name')
     }
 ]);
+
+
 
 function getMeta(prefix, attrName) {
     return $('meta')

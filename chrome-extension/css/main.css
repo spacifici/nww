@@ -9,7 +9,7 @@
 }
 
 .xxx-app .xxx-app-content {
-    position: relative;
+    position: fixed;
     background: rgba(76, 76, 94, 0.972549);
     box-shadow: rgba(0, 0, 0, 0.498039) -2px 0px 10px;
     height: 100%;

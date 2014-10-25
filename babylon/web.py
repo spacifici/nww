@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, url_for, jsonify
+from flask import Flask, render_template, url_for, jsonify, request
+from babylon import backends
+from glob import glob
+from os import path
 
 
 app = Flask(__name__)
@@ -30,40 +33,137 @@ def landing():
     return render_template('landing.jade', entries=entries)
 
 
+@app.route('/person/<handle>')
+def person(handle):
+    return ''
+
+
 @app.route('/timeline')
 def timeline():
     entries = [
-    ]
-    return render_template('timeline.jade', entries=entries)
+        {'column': 'left', 'type': 'article', 'scale': 'month'},
+        {'column': 'left', 'type': 'quote', 'scale': 'month xxx'},
+        {'column': 'right', 'type': 'article', 'scale': 'month yyy'},
+        {'column': 'left', 'type': 'article', 'scale': 'month'},
+        {'column': 'left', 'type': 'infographic', 'scale': 'month'},
+        {'column': 'left', 'type': 'gallery', 'scale': 'month'},
+    ] * 100
 
 
-@app.route('/api/article/id', methods=['GET'])
-def article_id():
-    return jsonify({})
+    return render_template('timeline_animated_a2.jade', entries=entries)
 
 
 @app.route('/api/article', methods=['GET'])
+def article_id():
+    url = request.args.get('uri', 'NON')
+    # article = backends.get_article(url)
+
+    article = {
+        "id": "dummy-id",
+        "type": "",
+        "title": "",
+        "description": "",
+        "time": "",
+        "source_url": "",
+        "og": {
+            "title": "",
+            "type": "", 
+            "url": "",
+            "image": "",
+            "site_name": "",
+            "description": "",
+        },
+        "quotes": [],
+        "people": [],
+        "topics": [],
+        "tags": [],
+        "meta": {
+            "people": [
+                {
+                    "name": "Vladimir Putin",
+                    "handle": "vladimir-putin",
+                    "position": "President of Russian Federation"
+                },
+                {
+                    "name": "Angela Merkel",
+                    "handle": "angela-merkel",
+                    "position": "Chancellor of the Federal Republic of Germany"
+                }
+            ],
+            "topics": [
+                {
+                    "name": "MH 17 Crash",
+                    "handle": "mh-17-crash"
+                }
+            ],
+            "tags": [
+                {
+                    "name": "Global Energy",
+                    "handle": "global-energy"
+                },
+                {
+                    "name": "Economy",
+                    "handle": "economy"
+                }
+            ]
+        }
+    }
+
+    ensure_image_urls(article)
+
+
+    return jsonify(article)
+
+
+@app.route('/api/article/<article_id>', methods=['GET'])
 def article():
     return jsonify({})
 
 
-@app.route('/api/article', methods=['PUT', 'POST'])
+@app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
 def update_article():
+    print 'update_article'
     return jsonify({'id': 'OK'})
 
-# @app.route('/timeline/animated')
-# def timeline_animated():
-#     entries = [
-#         {'column': 'left', 'type': 'article', 'scale': 'month'},
-#         {'column': 'left', 'type': 'quote', 'scale': 'month xxx'},
-#         {'column': 'right', 'type': 'article', 'scale': 'month yyy'},
-#         {'column': 'left', 'type': 'article', 'scale': 'month'},
-#         {'column': 'left', 'type': 'infographic', 'scale': 'month'},
-#         {'column': 'left', 'type': 'gallery', 'scale': 'month'},
-#     ] * 100
+
+@app.route('/img/<entity>/<handle>/<category>')
+def image(entity, handle, category):
+    img_file = path.join(
+        'entities', 
+        entity, 
+        '{}-{}'.format(handle, category))
+
+    abs_img_file = path.join(
+        path.abspath(app.static_folder), img_file
+    )
+
+    matching_files = glob(abs_img_file + '*')
+    assert matching_files
+
+    extension = path.splitext(matching_files[0])[1]
+    return app.send_static_file(img_file + extension)
 
 
-#     return render_template('timeline_animated_a2.jade', entries=entries)
+def ensure_image_urls(article):
+
+    if 'meta' not in article:
+        return article
+
+    meta = article['meta']
+
+    for person in meta.get('people', []):
+        person['url'] = url_for('.image',
+            entity='person',
+            handle=person['handle'],
+            category='icon')
+
+    for topic in meta.get('topics', []):
+        topic['url'] = url_for('.image',
+            entity='topic',
+            handle=topic['handle'],
+            category='icon')
+
+    return article
 
 
 # @app.route('/timeline')
