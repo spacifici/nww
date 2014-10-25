@@ -1,0 +1,11 @@
+{
+  "node_id": "person:1",
+  "type": "person",
+  "name": "Putin",
+  "handle": "putin",
+  "description": "descr"
+  "source_url": "http://blah.com/article"
+  "position": "President of Russian Federation",
+  "birth_year": 1954,
+  "curated": true
+}

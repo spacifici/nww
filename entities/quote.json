@@ -1,0 +1,16 @@
+{
+  "node_id": "quote:1",
+  "type": "quote",
+  "text": "hallo quote",
+  "time": "2014-10-10T15:00",
+  "source_url": "http://blah.com/article"
+  "source_id": "site:1",
+  "person_name": "Hans Meiser",
+  "person_id": "person:1",
+  "topics": [
+    "mh17", "maintained"
+  ],
+  "tags": [
+    "free"
+  ]
+}

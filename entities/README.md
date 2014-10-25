@@ -1,6 +1,6 @@
 nww - news world wide
 
-# Entity types
+# Entities
 
 - [Timeline](#timeline)
 - [Article](#article)
@@ -8,6 +8,25 @@ nww - news world wide
 - [Person](#person)
 - [Summary](#summary)
 - [Picture Gallery](#picture-gallery)
+
+
+## NWW Query
+
+```
+@merkel @putin #gas 1w +latest
+
+@: select person
+#: selcet topic
+1d: one day
+1w: one week
+1m: one month
+1y: one year
++latest: add latest news
+```
+
+## Curated entities
+
+Persons and topics are curated. Approved editors can take free form tags that anybody created and lift them to become a topic.
 
 ## <a id="timeline"></a>Timeline
 
@@ -19,32 +38,69 @@ Represents an external web page (news, blog, etc).
 
 ```json
 {
-    "entity_type": "article",
-    "url": "", // Resource URL
-    "discovery_date": "",
-
-    "extracted": { // Data extracted from HTML
-        "canonical_url": "", // Canonical URL
-        "language": "ukr", // Article language
-        "title": "", // Page Title
-        "description": "", 
-        "og": { ... }, // Facebook Open Graph data
-        "twitter": { ... }, // Twitter meta data
+  "node_id": "node:1",
+  "type": "news-article",
+  "title": "title",
+  "description": "descr"
+  "time": "2014-10-10T15:00",
+  "source_url": "http://blah.com/article"
+  "og": {
+    "title": "Російські ЗМІ і терористи в унісон заявили про збитий літак ВПС України",
+    "type": "politician", 
+    "url": "http://www.pravda.com.ua/news/2014/07/17/7032194/",
+    "image": "http://img.pravda.com/images/up_for_fb.gif",
+    "site_name": "Українська правда",
+    "description": "Російські ЗМІ та терористи повідомили про те, що збито транспортний літак Ан-26 Військово-Повітряних сил України.",
     },
-
-    "editors": { // Editor data
-        "@editor_name": { // Editor's handle
-            "initial_submitter": true,
-            "tags": [""], // List of tags
-            "topics": [""], // List of topics
-            "event_date": 
-        },
+    "quotes": [
+      {
+        "node_id": "quote:1",
+        "type": "quote",
+        "text": "hallo quote",
+        "time": "2014-10-10T15:00",
+        "source_url": "http://blah.com/article"
+        "source_id": "site:1",
+        "person_name": "Hans Meiser",
+        "person_id": "person:1"
+      }
+  ],
+  "people": [
+    {
+      "node_id": "person:1",
+      "type": "person",
+      "name": "Putin",
+      "handle": "putin",
+      "description": "descr"
+      "source_url": "http://blah.com/article"
+      "position": "President of Russian Federation",
+      "birth_year": 1954,
+      "curated": true
     }
-
-    "approved": { // Approved life-information, based on editors
-        // same, as editor entry
-    }
+  ],
+  "topics": [
+    "maintained"
+  ],
+  "tags": [
+    "free"
+  ]
 }
+```
+
+## <a id="quote"></a>Quote
+
+```json
+
+{
+  "node_id": "quote:1",
+  "type": "quote",
+  "text": "hallo quote",
+  "time": "2014-10-10T15:00",
+  "source_url": "http://blah.com/article"
+  "source_id": "site:1",
+  "person_name": "Hans Meiser",
+  "person_id": "person:1"
+}
+
 ```
 
 ## <a id="topic"></a>Topic 
@@ -79,12 +135,20 @@ Example: Flight MH17 Crash
 
 ## <a id="person"></a>Person
 
-Person's timeline
-
 ```json
+
 {
-    "entity_type": "person",
+  "node_id": "person:1",
+  "type": "person",
+  "name": "Putin",
+  "handle": "putin",
+  "description": "descr"
+  "source_url": "http://blah.com/article"
+  "position": "President of Russian Federation",
+  "birth_year": 1954,
+  "curated": true
 }
+
 ```
 
 ## <a id="summary"></a>Summary
