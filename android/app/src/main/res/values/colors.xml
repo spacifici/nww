@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="section_title_background">#ff00b21f</color>
-    <color name="article_title_background">#ff0aff0a</color>
+    <color name="section_title_background">#ff3e3e49</color>
+    <color name="article_title_background">#ff6c6c80</color>
+    <color name="common_background">#ff4c4c5e</color>
+    <color name="default_text_color">#ffd8d8db</color>
 </resources>

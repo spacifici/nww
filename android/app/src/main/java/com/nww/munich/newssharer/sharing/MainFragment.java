@@ -138,6 +138,7 @@ public class MainFragment extends Fragment implements OnClickListener {
                 CheckBox checkBox = new CheckBox(getActivity());
 
                 checkBox.setText(name);
+                checkBox.setTextColor(getResources().getColor(R.color.default_text_color));
                 LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                 int margin = getResources().getDimensionPixelSize(R.dimen.gridviews_padding);
                 layoutParams.setMargins(margin, margin, margin, margin);
