@@ -4,9 +4,9 @@ mixin tl_article(e)
         .timeline-content
             .article
                 img(src=e.og.image)
-                .title.floated= e.og.title
+                .title.floated= e.og.title or e.title
                 .release-date.floated= e.date_str
-                .description.floated= e.og.description
+                .description.floated= e.og.description or e.description
 
 
 mixin tl_quote(e)
@@ -226,32 +226,6 @@ html(lang="en")
             .gallery-block .timeline-content {
                 background-color: #fafafa;                
             }
-
-
-
-
-            //- .scale-2 .rating-1 {
-            //-     display: none;
-            //- }
-
-            //- .scale-3 .rating-1,
-            //- .scale-3 .rating-2 {
-            //-     display: none;
-            //- }
-
-            //- .scale-4 .rating-1,
-            //- .scale-4 .rating-2,
-            //- .scale-4 .rating-3 {
-            //-     display: none;
-            //- }
-
-            //- .scale-5 .rating-1,
-            //- .scale-5 .rating-2,
-            //- .scale-5 .rating-3,
-            //- .scale-5 .rating-4 {
-            //-     display: none;
-            //- }
-
 
             .text .huge {
                 font-weight: bold;

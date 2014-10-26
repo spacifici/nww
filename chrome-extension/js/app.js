@@ -41,6 +41,9 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             $scope.article = article;
             $scope.article.og = $scope.facebookMeta; 
 
+            article.title = $('title').text();
+            article.description = $('description').text();
+
             var selectedPeopleHandles = $scope.article.people.map(getHandle);
             var selectedTopics = $scope.article.topics.map(getHandle);
             var selectedTags = $scope.article.tags.map(getHandle);
@@ -67,7 +70,7 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
                 source_url: window.location.href,
                 source_id: $scope.article.id,
                 person: {
-                    name: 'Angel Merkel',
+                    name: 'Angela Merkel',
                     handle: 'angela-merkel',
                     position: 'Chancellor of the Federal Republic of Germany'
                 }

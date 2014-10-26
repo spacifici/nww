@@ -68,7 +68,7 @@ def save_content(obj):
 
 
 
-def find(people=[], topics=[]):
+def find(people=[], topics=[], scale=None):
 
     entities = (
         list(articles.find()) + 

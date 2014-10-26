@@ -29,7 +29,8 @@ def class_extractors():
     def timeline_entry_classes(entry):
         # return ' '.join([entry['column'], entry['scale']])
 
-        res = ['rating-{}'.format(entry['rating'])]
+        # res = ['rating-{}'.format(entry['rating'])]
+        res = []
 
         if entry.get('type') == 'gallery':
             if len(entry['images']) == 1:
@@ -182,9 +183,11 @@ def timeline():
         patch(entries[3], 3),
     ]
 
-    # scale = int(request.args.get('scale', '3'))
-    # entries = backends.query(people=people, topics=topics, scale=scale)
-    
+    scale = int(request.args.get('scale', '3'))
+    people = filter(None, request.args.get('people', '').split(','))
+    topics = filter(None, request.args.get('topics', '').split(','))
+
+    entries = backends.find(people=people, topics=topics, scale=scale)
 
     entries = map(gen_urls, entries)
 
