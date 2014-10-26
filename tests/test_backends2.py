@@ -6,21 +6,86 @@ import json
 
 def test_save_article():
     article = {
-        "id": "xxx",
+        "id": "544cc5e6970a310a7f613fbc",
         "type": "article",
         "date": "2014-10-09T07:57:35.879Z",
         "quotes": [
             {
-                
-            }
+            "person": {
+              "handle": "angela-merkel",
+              "name": "Angel Merkel",
+              "position": "Chancellor of the Federal Republic of Germany"
+            },
+            "source_id": "544cc4e1970a310984e9f276",
+            "source_url": "http://www.spiegel.de/politik/ausland/wahl-in-der-ukraine-poroschenko-laut-umfragen-favorit-a-971259.html",
+            "text": "Die zerr\u00fcttete Ukraine w\u00e4hlt am Sonntag einen neuen Pr\u00e4sidenten. Milliard\u00e4r Poroschenko hat beste Chancen. Doch was ist mit Gasprinzessin Tymoschenko? Und wie verh\u00e4lt sich Russland? Antworten auf die wichtigsten Fragen vor der Wahl.",
+            "topics": [],
+            "type": "quote"
+          }
         ],
         "people": [
+            {
+                "handle": "angela-merkel",
+                "name": "Angel Merkel"
+            }
         ],
         "topics": [
+            {
+                "handle": "mh-17-crash"
+            }
         ],
         "tags": [
+            {
+                "handle": "mh-17-crash"
+            }
         ]
     }
+
+    article2 = {
+        "id": "544cc5e6970a310a7f614fbc",
+        "type": "article",
+        "date": "2014-10-09T07:57:35.879Z",
+        "quotes": [
+        ],
+        "people": [
+            {
+                "handle": "putin",
+            }
+        ],
+        "topics": [
+            {
+                "handle": "mh-17-crash"
+            }
+        ],
+        "tags": [
+            {
+                "handle": "war"
+            }
+        ]
+    }
+
+    assert backends.articles.count() == 0
+    assert backends.quote_collections.count() == 0
+
+    backends.save_content(article)
+    backends.save_content(article2)
+
+    assert backends.articles.count() == 2
+    assert backends.quote_collections.count() == 1
+
+    quote = backends.quote_collections.find_one()
+    assert quote['topics'][0]['handle'] == 'mh-17-crash'
+
+
+    results = backends.find()
+    assert len(results) == 3
+
+    results = backends.find(people=['putin'])
+    assert len(results) == 1
+
+    results = backends.find(people=['angela-merkel'])
+    assert len(results) == 2
+
 
 
 # def test_save():
