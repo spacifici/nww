@@ -34,6 +34,7 @@ PERSONS_COLLECTION = 'persons'
 TAGS_COLLECTION = 'tags'
 QUOTES_COLLECTION = 'quotes'
 TOPICS_COLLECTION = 'topics'
+GALLERIES_COLLECTION = 'galleries'
 
 db = mongo_conn[MONGO_DB_NAME]
 articles = db[ARTICLES_COLLECTION]
@@ -41,6 +42,7 @@ persons = db[PERSONS_COLLECTION]
 tags = db[TAGS_COLLECTION]
 quote_collections = db[QUOTES_COLLECTION]
 topic_collections = db[TOPICS_COLLECTION]
+galleries_collection = db[GALLERIES_COLLECTION]
 
 
 def save_content(obj):
@@ -52,6 +54,31 @@ def save_content(obj):
         q['topics'] = obj['topics']
         q['people'] = obj['people']
         quote_collections.insert(q)
+
+
+def find(people=[], topics=[]):
+
+    entities = (
+        list(articles.find()) + 
+        list(quote_collections.find()) +
+        list(galleries_collection.find())
+    )
+
+    if not people and not topics:
+        return entities
+
+    result = []
+    for entity in entities:
+        if entity['type'] == 'quote':
+            if entity['person']['handle'] in people:
+                result.append(entity)
+                continue
+
+
+
+
+
+    return result
 
 
 def query(people=None, topic=None):

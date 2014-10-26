@@ -65,6 +65,31 @@ def person(handle):
 
 @app.route('/timeline')
 def timeline():
+
+    scale = int(request.args.get('scale', '3'))
+    # backends.query(people=people, topic)
+
+    def gen_urls(entry):
+        if entry.get('type') == 'quote':
+            entry['img_url'] = url_for('.image', 
+                entity='person', 
+                handle=entry['person']['handle'], 
+                category='quote', 
+                _external=True)
+
+        if entry.get('type') == 'gallery':
+            images = []
+            for index, img_url in enumerate(entry['images']):
+                url = url_for('.image', 
+                    entity='gallery', 
+                    handle=img_url, 
+                    category=str(index + 1))
+                images.append(url)
+            print images
+            entry['images'] = images
+
+        return entry
+
     entries = [
         {
             "node_id": "quote:1",
@@ -91,7 +116,7 @@ def timeline():
                 "birth_year": 0,
                 "curated": True
             },
-            'img_url': url_for('.image', entity='person', handle='barack-obama', category='quote', _external=True)
+            # 'img_url': url_for('.image', entity='person', handle='barack-obama', category='quote', _external=True)
         },
 
         {
@@ -110,17 +135,19 @@ def timeline():
         {
             "type": "gallery",
             "images": [
-                url_for('.image', entity='gallery', handle='g1-ebola', category='1'),
-                url_for('.image', entity='gallery', handle='g1-ebola', category='2'),
-                url_for('.image', entity='gallery', handle='g1-ebola', category='3')
+                'g1-ebola', 'g1-ebola', 'g1-ebola'
+                # url_for('.image', entity='gallery', handle='g1-ebola', category='1'),
+                # url_for('.image', entity='gallery', handle='g1-ebola', category='2'),
+                # url_for('.image', entity='gallery', handle='g1-ebola', category='3')
             ]
         },
 
         {
             "type": "gallery",
             "images": [
-                url_for('.image', entity='gallery', handle='g1-ebola', category='1'),
-                url_for('.image', entity='gallery', handle='g1-ebola', category='2')
+                'g1-ebola', 'g1-ebola'
+                # url_for('.image', entity='gallery', handle='g1-ebola', category='1'),
+                # url_for('.image', entity='gallery', handle='g1-ebola', category='2')
             ],
             "description": "Ebola xxxx",
             "date_str": "5 Hours ago"
@@ -129,13 +156,16 @@ def timeline():
         {
             "type": "gallery",
             "images": [
-                url_for('.image', entity='gallery', handle='g2-ebola', category='1'),
+                'g1-ebola'
+                # url_for('.image', entity='gallery', handle='g2-ebola', category='1'),
             ],
             "description": "Ebola xxxx",
             "date_str": "5 Hours ago"
         }
     
     ]
+
+    entries = map(gen_urls, entries)
 
     def patch(entry, rating):
         entry = dict(entry)
@@ -176,9 +206,7 @@ def article():
 @app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
 def update_article(article_id):
     article = request.get_json()
-    # backends.store_article(article)
     backends.save_content(article)
-    print json.dumps(article, indent=4)
     return jsonify(article)
 
 

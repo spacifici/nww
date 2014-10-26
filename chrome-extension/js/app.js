@@ -4,14 +4,16 @@ var app = angular.module('xxxApp', ['ngRoute', 'ngResource'])
 
 app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
     function($scope, $resource, $timeout) {
- 
+        var baseUrl = 'https://sleepy-mountain-8434.herokuapp.com';
+        var baseUrl = 'http://localhost:5050';
+
         var Article = $resource(
-            'http://localhost:5050/api/article/:id',
+            baseUrl + '/api/article/:id',
             {
                 'id': '@id'
             },
             {
-                'getByUrl': { url: 'http://localhost:5050/api/article', method: 'GET' },
+                'getByUrl': { url: baseUrl + '/api/article', method: 'GET' },
                 // 'get': { method: 'GET' },
                 // 'update': { method:'POST' }
             }
