@@ -44,9 +44,13 @@ topic_collections = db[TOPICS_COLLECTION]
 
 
 def save_content(obj):
-    articles.update({'_id': obj['id']}, obj)  # article should already be there
+    obj['_id'] = ObjectId(obj['id'])
+    articles.save(obj)  # article should already be there
+    # remove all quotes of this arsticle
+    quote_collections.remove({'source_id': obj['id']})
     for q in obj['quotes']:
         q['type'] = 'quote'
+        q['source_id'] = obj['id']
         q['rating'] = obj['rating'] + 1
         q['time'] = obj['time']
         q['topics'] = obj['topics']
