@@ -13,7 +13,7 @@ def get_meta():
                 },
                 {
                     "name": "Jinping Xi",
-                    "handl": "jinping-xi",
+                    "handle": "jinping-xi",
                     "position": "President of the People's Republic of China"
                 }
         ],
