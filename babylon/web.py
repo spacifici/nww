@@ -207,6 +207,10 @@ def article():
 def update_article(article_id):
     article = request.get_json()
     backends.save_content(article)
+    ensure_image_urls(article)
+    # del article['_id']
+    # del article['date']
+
     return jsonify(article)
 
 

@@ -46,14 +46,23 @@ galleries_collection = db[GALLERIES_COLLECTION]
 
 
 def save_content(obj):
-    articles.update({'_id': obj['id']}, obj)  # article should already be there
+    obj['_id'] = ObjectId(obj['id'])
+    articles.save(obj)  # article should already be there
+    # remove all quotes of this arsticle
+    quote_collections.remove({'source_id': obj['id']})
     for q in obj['quotes']:
         q['type'] = 'quote'
-        q['rating'] = obj['rating'] + 1
-        q['time'] = obj['time']
+        q['source_id'] = obj['id']
+        if 'rating' in obj:
+            q['rating'] = obj['rating'] + 1
+        # q['time'] = obj['time']
         q['topics'] = obj['topics']
-        q['people'] = obj['people']
+        # q['person'] = obj['people']
         quote_collections.insert(q)
+        
+        del q['_id']
+    json_ready(obj)
+
 
 
 def find(people=[], topics=[]):
