@@ -46,37 +46,6 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             $scope.article.meta.tags.forEach(function(entity) {
                 entity.isSelected = selectedTags.indexOf(entity.handle) > -1;
             });
-
-            // $scope.article.people = [
-            //     {
-            //         handle: "angela-merkel",
-            //         img_url: "http://sleepy-mountain-8434.herokuapp.com/img/person/angela-merkel/icon",
-            //         name: "Angela Merkel",
-            //         position: "Chancellor of the Federal Republic of Germany"
-            //     }
-            // ];
-            // $scope.article.topics = [
-            //     {
-            //         handle: "mh-17-crash",
-            //         img_url: "http://sleepy-mountain-8434.herokuapp.com/img/topic/mh-17-crash/icon",
-            //         name: "MH 17 Crash"
-            //     }
-            // ];
-            // $scope.article.tags = [
-            //     {
-            //         handle: "economy",
-            //         name: "Economy"
-            //     }
-            // ];
-            // $scope.article.quotes = [
-            //     {
-            //         text: "this is a quote",
-            //         source_url: window.location.href,
-            //         source_id: article.id,
-            //         person_name: "Angela Merkel",
-            //         person_handle: "angela-merkel"
-            //     }
-            // ];
         }
 
         Article.getByUrl({uri: window.location.href})
@@ -100,11 +69,8 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             $scope.article.people = $scope.article.meta.people.filter(isSelected);
             $scope.article.topics = $scope.article.meta.topics.filter(isSelected);
             $scope.article.tags = $scope.article.meta.tags.filter(isSelected);
+
             $scope.article.$save(loadArticle);
-            // console.log($scope.article)
-            // $scope.article.tags = $scope.article.tags.filter(isSelected)
-            // $scope.article.persons = $scope.article.persons.filter(isSelected)
-            // $timeout(toggleSidebar, 800);
         }
 
         document.addQuote = function(quote) {

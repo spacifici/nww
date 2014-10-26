@@ -69,11 +69,13 @@
     opacity: 0.7;
 }
 
+.xxx-app .rating,
 .xxx-app .topic,
 .xxx-app .quote {
     opacity: 0.8;
 }
 
+.xxx-app .rating,
 .xxx-app .topic,
 .xxx-app .person,
 .xxx-app .quote {
@@ -84,6 +86,7 @@
     vertical-align: middle;
 }
 
+.xxx-app .rating,
 .xxx-app .topic:last-child,
 .xxx-app .person:last-child,
 .xxx-app .quote:last-child {
