@@ -85,8 +85,8 @@ def test_save():
       "type": "article"
     }"""
     backends.store_article(json.loads(json_obj))
-    backends.save_content(json_obj)
-    res = backends.query(people='angela-merkel')
+    backends.save_content(json.loads(json_obj))
+    res = backends.query(people=['angela-merkel'])
     assert backends.articles.find().count() == 1
     assert backends.articles.find({'people.handle': 'angela-merkel'}).count() == 1
     assert len(res['articles']) == 1
