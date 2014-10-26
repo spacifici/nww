@@ -10,6 +10,11 @@ def get_meta():
                     "name": "Angela Merkel",
                     "handle": "angela-merkel",
                     "position": "Chancellor of the Federal Republic of Germany"
+                },
+                {
+                    "name": "Jinping Xi",
+                    "handle": "jinping-xi",
+                    "position": "President of the People's Republic of China"
                 }
         ],
         "topics": [
