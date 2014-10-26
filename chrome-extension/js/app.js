@@ -31,6 +31,12 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             $scope.article.og = $scope.facebookMeta; 
             $scope.isLoading = false;
 
+            if (!article.date) {
+                article.date = new Date();
+            } else {
+                article.date = new Date(article.date)
+            }
+
             var selectedPeopleHandles = $scope.article.people.map(getHandle);
             var selectedTopics = $scope.article.topics.map(getHandle);
             var selectedTags = $scope.article.tags.map(getHandle);
