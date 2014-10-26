@@ -34,6 +34,7 @@ PERSONS_COLLECTION = 'persons'
 TAGS_COLLECTION = 'tags'
 QUOTES_COLLECTION = 'quotes'
 TOPICS_COLLECTION = 'topics'
+GALLERIES_COLLECTION = 'galleries'
 
 db = mongo_conn[MONGO_DB_NAME]
 articles = db[ARTICLES_COLLECTION]
@@ -41,6 +42,7 @@ persons = db[PERSONS_COLLECTION]
 tags = db[TAGS_COLLECTION]
 quote_collections = db[QUOTES_COLLECTION]
 topic_collections = db[TOPICS_COLLECTION]
+galleries_collection = db[GALLERIES_COLLECTION]
 
 
 def save_content(obj):
@@ -51,11 +53,41 @@ def save_content(obj):
     for q in obj['quotes']:
         q['type'] = 'quote'
         q['source_id'] = obj['id']
-        q['rating'] = obj['rating'] + 1
-        q['time'] = obj['time']
+        if 'rating' in obj:
+            q['rating'] = obj['rating'] + 1
+        # q['time'] = obj['time']
         q['topics'] = obj['topics']
-        q['people'] = obj['people']
+        # q['person'] = obj['people']
         quote_collections.insert(q)
+        
+        del q['_id']
+    json_ready(obj)
+
+
+
+def find(people=[], topics=[]):
+
+    entities = (
+        list(articles.find()) + 
+        list(quote_collections.find()) +
+        list(galleries_collection.find())
+    )
+
+    if not people and not topics:
+        return entities
+
+    result = []
+    for entity in entities:
+        if entity['type'] == 'quote':
+            if entity['person']['handle'] in people:
+                result.append(entity)
+                continue
+
+
+
+
+
+    return result
 
 
 def query(people=None, topic=None):

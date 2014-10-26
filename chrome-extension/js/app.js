@@ -4,14 +4,16 @@ var app = angular.module('xxxApp', ['ngRoute', 'ngResource'])
 
 app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
     function($scope, $resource, $timeout) {
- 
+        var baseUrl = 'https://sleepy-mountain-8434.herokuapp.com';
+        var baseUrl = 'http://localhost:5050';
+
         var Article = $resource(
-            'http://localhost:5050/api/article/:id',
+            baseUrl + '/api/article/:id',
             {
                 'id': '@id'
             },
             {
-                'getByUrl': { url: 'http://localhost:5050/api/article', method: 'GET' },
+                'getByUrl': { url: baseUrl + '/api/article', method: 'GET' },
                 // 'get': { method: 'GET' },
                 // 'update': { method:'POST' }
             }
@@ -27,8 +29,7 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
 
         function loadArticle(article) {
             $scope.facebookMeta = getMeta('og:', 'property');
-            $scope.article = article;
-            $scope.article.og = $scope.facebookMeta; 
+            
             $scope.isLoading = false;
 
             if (!article.date) {
@@ -36,6 +37,9 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             } else {
                 article.date = new Date(article.date)
             }
+
+            $scope.article = article;
+            $scope.article.og = $scope.facebookMeta; 
 
             var selectedPeopleHandles = $scope.article.people.map(getHandle);
             var selectedTopics = $scope.article.topics.map(getHandle);
@@ -62,8 +66,11 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
                 text: text,
                 source_url: window.location.href,
                 source_id: $scope.article.id,
-                person_name: personName,
-                person_handle: personHandle
+                person: {
+                    name: 'Angel Merkel',
+                    handle: 'angela-merkel',
+                    position: 'Chancellor of the Federal Republic of Germany'
+                }
             }
         }
 
@@ -83,6 +90,7 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             console.log('pushing qote', quote)
             $scope.article.quotes.push(newQuote(quote, 'Angela Merkel', 'angela-merkel'));
             $scope.$apply();
+            $scope.saveArticle();
         }
 
         // <link rel="canonical" href="http://www.spiegel.de/politik/deutschland/dobrindt-zu-pkw-maut-zugestaendnisse-geplant-a-997878.html">
