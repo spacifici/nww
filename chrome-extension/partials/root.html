@@ -37,6 +37,9 @@
                         <div class="author">
                             <bold>{{ quote.person.name }}</bold>
                         </div>
+                        <div ng-repeat="person in article.meta.people">
+                             <input type="radio" ng-model="quote.person.handle" ng-value="person.handle" ng-click="fixQuote(quote, person)"> {{ person.name }}<br/>
+                        </div>
                     </div>
                 </div>
                 

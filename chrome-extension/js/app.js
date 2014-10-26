@@ -5,7 +5,7 @@ var app = angular.module('xxxApp', ['ngRoute', 'ngResource'])
 app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
     function($scope, $resource, $timeout) {
         var baseUrl = 'https://sleepy-mountain-8434.herokuapp.com';
-        var baseUrl = 'http://localhost:5050';
+        // var baseUrl = 'http://localhost:5050';
 
         var Article = $resource(
             baseUrl + '/api/article/:id',
@@ -89,8 +89,15 @@ app.controller('RootCtrl', ['$scope', '$resource', '$timeout',
             $scope.article.$save(loadArticle);
         }
 
+        $scope.fixQuote = function(quote, person) {
+            // TODO: assign quote.person = person, doesn't work. Why?
+            // This is badly fiddling with quote.person internals.
+            quote.person.position = person.position;
+            quote.person.name = person.name;
+            $scope.saveArticle();
+        }
+
         document.addQuote = function(quote) {
-            console.log('pushing qote', quote)
             $scope.article.quotes.push(newQuote(quote, 'Angela Merkel', 'angela-merkel'));
             $scope.$apply();
             $scope.saveArticle();
