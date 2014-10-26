@@ -44,7 +44,6 @@ topic_collections = db[TOPICS_COLLECTION]
 
 
 def save_content(obj):
-    obj = json.loads(obj)
     articles.update({'_id': obj['id']}, obj)  # article should already be there
     for q in obj['quotes']:
         q['type'] = 'quote'
@@ -56,19 +55,23 @@ def save_content(obj):
 
 
 def query(people=None, topic=None):
-    if people:
-        key = 'people.handle'
-        kw = people
-    else:
-        key = 'topics.handle'
-        kw = topic
+    assert people or topic
+    people_key = 'people.handle'
+    topic_key = 'topics.handle'
         
     # query for people
+    kws = []
+    if people:
+        for k in people:
+            kws.append({people_key: k})
+    if topic:
+        for k in topic:
+            kws.append({topic_key: k})
     res = {'articles': [], 'quotes': []}
-    print key, kw
-    for a in articles.find({key: kw}).sort('time', -1):
+    query = {'$or': kws}
+    for a in articles.find(query).sort('time', -1):
         res['articles'].append(a)
-    for q in quote_collections.find({key: kw}).sort('time', -1):
+    for q in quote_collections.find(query).sort('time', -1):
         res['quotes'].append(q)
     return res
     

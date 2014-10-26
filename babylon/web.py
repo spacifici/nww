@@ -176,8 +176,8 @@ def article():
 @app.route('/api/article/<article_id>', methods=['PUT', 'POST'])
 def update_article(article_id):
     article = request.get_json()
-    article = backends.store_article(article)
-    import json
+    # backends.store_article(article)
+    backends.save_content(article)
     print json.dumps(article, indent=4)
     return jsonify(article)
 
