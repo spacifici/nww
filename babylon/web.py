@@ -66,9 +66,6 @@ def person(handle):
 @app.route('/timeline')
 def timeline():
 
-    scale = int(request.args.get('scale', '3'))
-    # backends.query(people=people, topic)
-
     def gen_urls(entry):
         if entry.get('type') == 'quote':
             entry['img_url'] = url_for('.image', 
@@ -165,8 +162,6 @@ def timeline():
     
     ]
 
-    entries = map(gen_urls, entries)
-
     def patch(entry, rating):
         entry = dict(entry)
         entry['rating'] = rating
@@ -186,6 +181,14 @@ def timeline():
         patch(entries[4], 1),
         patch(entries[3], 3),
     ]
+
+    # scale = int(request.args.get('scale', '3'))
+    # entries = backends.query(people=people, topics=topics, scale=scale)
+    
+
+    entries = map(gen_urls, entries)
+
+
 
     return render_template('timeline_animated_a2.jade', entries=entries)
 
