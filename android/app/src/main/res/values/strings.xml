@@ -26,5 +26,8 @@
     <string name="president_of_france">President of France</string>
     <string name="submit">Submit</string>
     <string name="need_a_topic_and_a_person">Need at least one topic and one person</string>
+    <string name="posting">Your date are being submitted to our backend, please wait.</string>
+    <string name="error_sending">Error sending your data. Please, retry.</string>
+    <string name="post_completed">Your data was successfully submitted</string>
 
 </resources>

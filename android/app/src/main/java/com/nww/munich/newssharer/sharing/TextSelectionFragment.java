@@ -1,7 +1,6 @@
 package com.nww.munich.newssharer.sharing;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -11,11 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 
 import com.nww.munich.newssharer.R;
-
-import static android.view.View.OnClickListener;
 
 /**
  * Created by Stefano Pacifici on 25/10/14.

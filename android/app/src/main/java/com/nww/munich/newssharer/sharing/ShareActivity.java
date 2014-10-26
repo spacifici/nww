@@ -2,22 +2,18 @@ package com.nww.munich.newssharer.sharing;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.nww.munich.newssharer.Constants;
 import com.nww.munich.newssharer.R;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -41,6 +37,7 @@ public class ShareActivity extends Activity {
     ArrayList<Integer> personIndexes;
 
     private ProgressDialog progressDialog;
+    private String articleID;
 
     private final Callback getCallback = new Callback() {
         @Override
@@ -57,7 +54,7 @@ public class ShareActivity extends Activity {
                 String json = response.body().string();
                 Log.i("JSON", json);
                 jsonArticle = new JSONObject(json);
-
+                articleID = jsonArticle.getString("id");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -67,6 +64,30 @@ public class ShareActivity extends Activity {
             } catch (JSONException e) {
                 showErrorDialog(R.string.error_parsing_backend_response, true);
             }
+        }
+    };
+
+    private final Callback postCallback = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+            hideLoadingDialog();
+            showErrorDialog(R.string.error_sending, false);
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            hideLoadingDialog();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(
+                            getApplicationContext(),
+                            getString(R.string.post_completed),
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    finish();
+                }
+            });
         }
     };
 
@@ -218,11 +239,10 @@ public class ShareActivity extends Activity {
                 people.put(p);
             }
 
-            Log.i("FIN", jsonArticle.toString(2));
+            showLoadingDialog(getString(R.string.posting));
+            ApiRequests.sharedInstace.articlePost(articleID, jsonArticle, postCallback);
         } catch (JSONException ex) {
             showErrorDialog(R.string.error_parsing_backend_response, true);
         }
     }
-
-
 }

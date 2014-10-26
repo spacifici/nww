@@ -19,6 +19,8 @@ public class Constants {
 
     public static final String CREATE_ARTICLE_URL = BASE_URL + "/api/article?url=%s";
 
+    public static final String POST_ARTICLE_URL = BASE_URL + "/api/article/%s";
+
     public static final Map<String, Integer> HANDLE_TO_PHOTO;
 
     public static final Object[][] PERSONS = new Object[][] {
