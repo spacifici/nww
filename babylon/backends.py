@@ -16,6 +16,9 @@ import json
 import hashlib
 
 
+from operator import itemgetter
+
+
 redis_url = os.environ['REDISCLOUD_URL']
 redis_url = urlparse.urlparse(redis_url)
 redis_conn = redis.Redis(
@@ -78,14 +81,26 @@ def find(people=[], topics=[]):
 
     result = []
     for entity in entities:
-        if entity['type'] == 'quote':
-            if entity['person']['handle'] in people:
+        if people:
+            if entity['type'] == 'quote':
+                if entity['person']['handle'] in people:
+                    result.append(entity)
+                    continue
+            else:
+                handles = entity.get('people', [])
+                handles = map(itemgetter('handle'), handles)
+                contains = set(handles).intersection(people)
+                if contains:
+                    result.append(entity)
+                    continue
+
+        if topics:
+            handles = entity.get('topics', [])
+            handles = map(itemgetter('handle'), handles)
+            contains = set(handles).intersection(topics)
+            if contains:
                 result.append(entity)
                 continue
-
-
-
-
 
     return result
 
