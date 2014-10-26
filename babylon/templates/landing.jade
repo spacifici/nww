@@ -3,9 +3,32 @@ html(lang="en")
     head
         meta(name="viewport", content="width=device-width, initial-scale=1")
         meta(charset="utf-8")
+        link(rel="stylesheet", href="/static/bootstrap.css")
         title Babylon - New way to read the news
+        style
+            .col-md-8 {
+                margin: 10px;
+            }
+
+            .col-md-8 img {
+                padding-right: 10px;
+            }
 
     body
-        for e in entries
-            div 
-                a(href=e.url) {{ e }}
+        div.container.center
+            div.profile.col-md-8
+                img(src=url_for('.image', entity='person', handle='angela-merkel', category='icon'), height=60)
+                a(href='/timeline?people=angela-merkel') Angela Merkel
+            
+            div.profile.col-md-8
+                img(src=url_for('.image', entity='person', handle='angela-merkel', category='icon'), height=60)
+                a(href='/timeline?topics=mh-17-crash') MH17 Crash
+            
+            div.profile.col-md-8
+                img(src=url_for('.image', entity='person', handle='angela-merkel', category='icon'), height=60)
+                a(href='/timeline?topics=mh-17-crash&people=angela-merkel') Angel Merkel in context of MH17 Crash
+
+            div.profile.col-md-8
+                img(src=url_for('.image', entity='person', handle='angela-merkel', category='icon'), height=60)
+                img(src=url_for('.image', entity='person', handle='vladimir-putin', category='icon'), height=60)
+                a(href='/timeline?topics=mh-17-crash&people=angela-merkel,vladimir-putin') Angel Merkel in context of MH17 Crash

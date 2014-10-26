@@ -191,9 +191,17 @@ def timeline():
 
     entries = map(gen_urls, entries)
 
+    def timeline_scale_url(scale):
+        kwargs = {'scale': scale}
+        if people:
+            kwargs['people'] = ','.join(people)
+        if topics:
+            kwargs['topics'] = ','.join(topics)
+        return url_for('.timeline', **kwargs)
 
-
-    return render_template('timeline_animated_a2.jade', entries=entries)
+    return render_template('timeline_animated_a2.jade', 
+        entries=entries,
+        timeline_scale_url=timeline_scale_url)
 
 
 @app.route('/api/article', methods=['GET'])

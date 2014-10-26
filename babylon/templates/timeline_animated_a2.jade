@@ -1,5 +1,5 @@
 mixin tl_article(e)
-    .timeline-block.article-block(class=tl_entry_classes(e))
+    .timeline-block.article-block(class=tl_entry_classes(e), data-id=e.id)
         .timeline-img.picture
         .timeline-content
             .article
@@ -10,7 +10,7 @@ mixin tl_article(e)
 
 
 mixin tl_quote(e)
-    .timeline-block.quote-block(class=tl_entry_classes(e))
+    .timeline-block.quote-block(class=tl_entry_classes(e), data-id=e.id)
         .timeline-img.picture
         .timeline-content
             .quote(style="background-image: url('{{ e.img_url }}') ")
@@ -25,7 +25,7 @@ mixin tl_quote(e)
 
 
 mixin tl_gallery(e)
-    .timeline-block.gallery-block(class=tl_entry_classes(e))
+    .timeline-block.gallery-block(class=tl_entry_classes(e), data-id=e.id)
         .timeline-img.picture
         .timeline-content
             .images
@@ -256,11 +256,11 @@ html(lang="en")
 
     body
         div(style="text-align: center; cursor: pointer;")
-            a.scale-update.rating-1 [1]
-            a.scale-update.rating-2 [2]
-            a.scale-update.rating-3 [3]
-            a.scale-update.rating-4 [4]
-            a.scale-update.rating-5 [5]
+            a(href=timeline_scale_url(1)) [1]
+            a(href=timeline_scale_url(2)) [2]
+            a(href=timeline_scale_url(3)) [3]
+            a(href=timeline_scale_url(4)) [4]
+            a(href=timeline_scale_url(5)) [5]
 
         section.timeline.container
             for entry in entries

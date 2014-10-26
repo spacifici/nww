@@ -102,6 +102,9 @@ def find(people=[], topics=[], scale=None):
                 result.append(entity)
                 continue
 
+    if scale:
+        result = filter(lambda r: r.get('rating', 3) >= scale, result)
+
     return result
 
 
