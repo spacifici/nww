@@ -151,11 +151,47 @@ public class MainFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void addPersons() {
+    private void old_addPersons() {
         personViews = new ArrayList<PersonView>(Constants.PERSONS.length);
 
         for (Object[] record: Constants.PERSONS)
             addPeopleView(record);
+    }
+
+    private void addPersons() {
+        JSONObject article = ((ShareActivity) getActivity()).jsonArticle;
+
+        try {
+            JSONArray people = article.getJSONObject("meta").getJSONArray("people");
+            personViews = new ArrayList<PersonView>(people.length());
+            for (int ix = 0; ix < people.length(); ix++) {
+                addPeopleViewUsingJSON(people.getJSONObject(ix));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addPeopleViewUsingJSON(JSONObject person) throws JSONException {
+        String name = person.getString("name");
+        String handle = person.getString("handle");
+        String position = person.getString("position");
+
+        Integer photoID = Constants.HANDLE_TO_PHOTO.get(handle);
+        if (photoID == null) {
+            photoID = new Integer(R.drawable.anonymous);
+        }
+        Resources res = getResources();
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+        PersonView view = new PersonView(getActivity());
+        view.setName(name);
+        view.setPosition(position);
+        Bitmap bm = BitmapFactory.decodeResource(res, photoID);
+        view.setProfileBitmap(bm);
+
+        peopleLinearLayout.addView(view, layoutParams);
+        personViews.add(view);
     }
 
     private void addPeopleView(Object[] record) {

@@ -1,5 +1,9 @@
 package com.nww.munich.newssharer;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Stefano Pacifici on 25/10/14.
  */
@@ -14,6 +18,8 @@ public class Constants {
     public static final String BASE_URL = STAGING_BASE_URL;
 
     public static final String CREATE_ARTICLE_URL = BASE_URL + "/api/article?url=%s";
+
+    public static final Map<String, Integer> HANDLE_TO_PHOTO;
 
     public static final Object[][] PERSONS = new Object[][] {
         {
@@ -45,4 +51,14 @@ public class Constants {
                 "http://sleepy-mountain-8434.herokuapp.com/img/person/francois-hollande/icon"
         }
     };
+
+    static {
+        HashMap<String, Integer> handleToPhoto = new HashMap<String, Integer>();
+        handleToPhoto.put("angela-merkel", R.drawable.merkel);
+        handleToPhoto.put("barack-obama", R.drawable.obama);
+        handleToPhoto.put("vladimir-putin", R.drawable.vladimir);
+        handleToPhoto.put("francois-hollande",R.drawable.francois);
+
+        HANDLE_TO_PHOTO = Collections.unmodifiableMap(handleToPhoto);
+    }
 }
